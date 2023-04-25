@@ -1,0 +1,37 @@
+package com.service.impl;
+
+import com.dao.UserDao;
+import com.dao.impl.userDaoImpl;
+import com.pojo.Order;
+import com.pojo.User;
+import com.service.UserService;
+
+import java.util.List;
+
+public class UserServiceImpl implements UserService {
+    private UserDao userDao = new userDaoImpl();
+    @Override
+    public User selectAllUser(String name, String password, String identity) {
+        return userDao.selectAllUser(name,password,identity);
+    }
+
+    @Override
+    public List<Object> selectAllTraveller() {
+        return userDao.selectAllTraveller();
+    }
+
+    @Override
+    public List<Object> selectAllOrder() {
+        return userDao.selectAllOrder();
+    }
+
+    @Override
+    public List<Object> selectAllOrder(String page, String limit) {
+        return userDao.selectAllOrder(page, limit);
+    }
+
+    @Override
+    public int travellerCount() {
+        return userDao.travellerCount();
+    }
+}
