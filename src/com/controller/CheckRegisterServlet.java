@@ -22,9 +22,14 @@ public class CheckRegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
-        String identity = req.getParameter("identity");
-        User user = new User();
+
         UserService userService = new UserServiceImpl();
-        userService.selectAllUser(name, password, identity);
+        Boolean result = userService.selectUserByName(name);
+        if(!result){
+            userService.insertUser(name,password);
+            resp.getWriter().write("success");
+        } else {
+            resp.getWriter().write("fail");
+        }
     }
 }

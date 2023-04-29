@@ -8,12 +8,13 @@ import java.util.List;
 
 public interface UserService {
 
-    User selectAllUser(String name, String password,String identity);
-
-    List<Object> selectAllTraveller();
+    Boolean selectUserByNameAndPassword(String name, String password,String identity);
+    Boolean selectUserByName(String name);
+    void insertUser(String name, String password);
+    /*List<Object> selectAllTraveller();
     List<Object> selectAllOrder();
 
     List<Object> selectAllOrder(String page,String limit);
 
-    int travellerCount();
+    int travellerCount();*/
 }

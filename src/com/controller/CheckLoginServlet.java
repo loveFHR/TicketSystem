@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/CheckLogin")
@@ -24,15 +25,26 @@ public class CheckLoginServlet extends HttpServlet {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String identity = request.getParameter("identity");
+        String method = request.getParameter("method");
 
-        UserService userService = new UserServiceImpl();
-        User user = userService.selectAllUser(name, password, identity);
-        if (user != null && user.getIdentity().equals("company")) {
-            response.getWriter().write("company");
-        } else if (user != null && user.getIdentity().equals("traveller")) {
-            response.getWriter().write("traveller");
-        } else {
-            response.getWriter().write("fail");
+        HttpSession session = request.getSession();
+
+        if(method.equals("2")){      //退出登录
+            session.invalidate();    //销毁session
+            response.sendRedirect("/jsp/login.jsp");
+        }else {  //登录
+            UserService userService = new UserServiceImpl();
+            Boolean result = userService.selectUserByNameAndPassword(name, password, identity);
+
+            if (result && identity.equals("company")) {
+                session.setAttribute("name",name);
+                response.getWriter().write("company");
+            } else if (result && identity.equals("user")) {
+                session.setAttribute("name",name);
+                response.getWriter().write("traveller");
+            } else {
+                response.getWriter().write("fail");
+            }
         }
     }
 }

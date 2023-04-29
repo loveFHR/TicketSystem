@@ -14,35 +14,72 @@ import java.util.List;
 
 public class userDaoImpl implements UserDao {
     @Override
-    public User selectAllUser(String name, String password, String identity) {
+    public Boolean selectUserByNameAndPassword(String name, String password, String identity) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
             conn = JNDIUtils.getConnection();
-            String sql = "select * from user where name = ? and password = ? and identity = ?";
+            String sql = "select * from "+identity+" where name = ? and password = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1,name);
             ps.setString(2,password);
-            ps.setString(3,identity);
             rs = ps.executeQuery();
 
-            while (rs.next()) {
-                User user = new User();
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setIdentity(rs.getString("identity"));
-                return user;
+            if (rs.next()) {
+                return true;
             }
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
             JNDIUtils.close(conn,ps,rs);
         }
-        return null;
+        return false;
     }
 
     @Override
+    public Boolean selectUserByName(String name) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "select * from `user` where name = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,name);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return false;
+    }
+
+    @Override
+    public void insertUser(String name, String password) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "insert into user values (?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,name);
+            ps.setString(2,password);
+            ps.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,null);
+        }
+    }
+
+    /*@Override
     public List<Object> selectAllTraveller() {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -57,7 +94,6 @@ public class userDaoImpl implements UserDao {
                 User user = new User();
                 user.setName(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
-                user.setIdentity(rs.getString("identity"));
                 list.add(user);
             }
             return list;
@@ -157,5 +193,5 @@ public class userDaoImpl implements UserDao {
             JNDIUtils.close(conn,ps,rs);
         }
         return 0;
-    }
+    }*/
 }

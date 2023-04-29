@@ -2,8 +2,6 @@ package com.service.impl;
 
 import com.dao.UserDao;
 import com.dao.impl.userDaoImpl;
-import com.pojo.Order;
-import com.pojo.User;
 import com.service.UserService;
 
 import java.util.List;
@@ -11,11 +9,21 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserDao userDao = new userDaoImpl();
     @Override
-    public User selectAllUser(String name, String password, String identity) {
-        return userDao.selectAllUser(name,password,identity);
+    public Boolean selectUserByNameAndPassword(String name, String password, String identity) {
+        return userDao.selectUserByNameAndPassword(name,password,identity);
     }
 
     @Override
+    public Boolean selectUserByName(String name) {
+        return userDao.selectUserByName(name);
+    }
+
+    @Override
+    public void insertUser(String name, String password) {
+        userDao.insertUser(name,password);
+    }
+
+/*    @Override
     public List<Object> selectAllTraveller() {
         return userDao.selectAllTraveller();
     }
@@ -33,5 +41,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public int travellerCount() {
         return userDao.travellerCount();
-    }
+    }*/
 }
