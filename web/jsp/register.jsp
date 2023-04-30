@@ -26,7 +26,7 @@
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
   <div class="layadmin-user-login-main">
     <div class="layadmin-user-login-box layadmin-user-login-header">
-      <h2>注册</h2>
+      <h2>用户注册</h2>
       <p> </p>
     </div>
     <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
@@ -74,7 +74,9 @@
         },
         success:function (res) {
           if (res === 'success'){
-            layer.msg('注册成功',{icon:6})
+            layer.msg('注册成功',{icon:6,time:1000},function (){
+              window.location.href = "/jsp/login.jsp"
+            })
           }else {
             layer.msg('注册失败',{icon:5})
           }

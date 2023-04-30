@@ -104,17 +104,15 @@
                         }, function () {
                             // 关闭弹出层
                             layer.close(index);
+                            window.location.reload();
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
                         });
-                        return false;
                     } else {
-                        layer.msg('添加失败，请检查航班号是否正确',{icon:5})
+                        layer.msg('添加失败，请检查航班号是否正确', {icon:5, time:2000})
                     }
-
                 }
             })
-
         });
 
     });

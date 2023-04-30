@@ -11,4 +11,5 @@ public interface FlightDao {
     void insertFlight(Flight flight);
     Flight selectFlightById(Integer flightId);
     void updateFlightById(Integer flightId,Flight flight);
+    void deleteFlightById(Integer flightId);
 }

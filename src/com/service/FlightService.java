@@ -12,4 +12,5 @@ public interface FlightService {
 
     Flight selectFlightById(Integer flightId);
     void updateFlightById(Integer flightId,Flight flight);
+    void deleteFlightById(Integer flightId);
 }

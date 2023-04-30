@@ -48,25 +48,25 @@ public class FlightController extends HttpServlet {
             String addData = req.getParameter("addData"); //从前端取得添加航班的json字符串
             Flight flight = JSON.parseObject(addData, Flight.class);//将json字符串转为航班对象
 
-            flightService.insertFlight(flight); //添加用户
+            flightService.insertFlight(flight); //添加航班
             resp.getWriter().write("success"); //向前端发送成功消息
 
         } else if (method.equals("updForm")) { //通过ID查询航班并将信息写入表单方便修改
             String flightId = req.getParameter("flightId");
             Flight flight = flightService.selectFlightById(Integer.parseInt(flightId));//查询出选中要修改航班的信息
             session.setAttribute("flight",flight); //通过session传数据让前端通过el表达式接收
-            session.setAttribute("flightId",flightId);
-            System.out.println(flightId);
             resp.getWriter().write("success");
 
-        } else if (method.equals("update")) {
+        } else if (method.equals("update")) { //修改航班信息
             String updateData = req.getParameter("updateData");
             Flight flight = JSON.parseObject(updateData, Flight.class);//将json字符串转为航班对象
             flightService.updateFlightById(flight.getFlightId(),flight);
             resp.getWriter().write("success");
 
-        } else if (method.equals("delete")) {
-
+        } else if (method.equals("delete")) { //删除航班信息
+            String delData = req.getParameter("delData");
+            flightService.deleteFlightById(Integer.parseInt(delData));//删除航班
+            resp.getWriter().write("success"); //向前端发送成功消息
         }
     }
 }

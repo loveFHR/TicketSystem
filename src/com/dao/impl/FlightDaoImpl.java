@@ -174,4 +174,21 @@ public class FlightDaoImpl implements FlightDao {
             JNDIUtils.close(conn,ps,null);
         }
     }
+
+    @Override
+    public void deleteFlightById(Integer flightId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "DELETE FROM flight WHERE f_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,flightId);
+            ps.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            JNDIUtils.close(conn,ps,null);
+        }
+    }
 }

@@ -33,4 +33,9 @@ public class FlightServiceImpl implements FlightService {
     public void updateFlightById(Integer flightId, Flight flight) {
         flightDao.updateFlightById(flightId,flight);
     }
+
+    @Override
+    public void deleteFlightById(Integer flightId) {
+        flightDao.deleteFlightById(flightId);
+    }
 }

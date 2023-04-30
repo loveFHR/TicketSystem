@@ -28,6 +28,7 @@
     <label class="layui-form-label required">ID</label>
     <div class="layui-input-block">
       <input type="text" name="flightId" lay-verify="required" class="layui-input" value="${flight.flightId}" readonly>
+      <tip>ID不可修改</tip>
     </div>
   </div>
   <div class="layui-form-item">
@@ -112,12 +113,12 @@
             }, function () {
               // 关闭弹出层
               layer.close(index);
+              parent.window.location.reload()
               var iframeIndex = parent.layer.getFrameIndex(window.name);
               parent.layer.close(iframeIndex);
             });
-            return false;
           }else {
-            layer.msg('修改失败，请检查航班号是否正确',{icon:5})
+            layer.msg('修改失败',{icon:5})
           }
         }
       })
