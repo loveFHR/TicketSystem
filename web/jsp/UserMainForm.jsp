@@ -19,23 +19,21 @@
         <div class="layui-logo layui-hide-xs layui-bg-black">
             用户系统
         </div>
-
-        <ul class="layui-nav layui-layout-right">
+        <ul class="layui-nav layui-layout-left" lay-bar="disabled">
+            <li class="layui-nav-item">您的身份:大帅逼</li>
+        </ul>
+        <ul class="layui-nav layui-layout-right ">
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                 <a href="javascript:;" id="user-name">
-                    <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">
+                    <img src="/image/头像.png" class="layui-nav-img">
                     ${name}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Your Profile</a></dd>
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="/CheckLogin?method=2">Sign out</a></dd>
+                    <dd><a href="">修改资料</a></dd>
+                    <dd><a href="">设置</a></dd>
+                    <hr/>
+                    <dd><a href="/CheckLogin?method=2">退出</a></dd>
                 </dl>
-            </li>
-            <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
-                <a href="javascript:;">
-                    <i class="layui-icon layui-icon-more-vertical"></i>
-                </a>
             </li>
         </ul>
     </div>
@@ -43,11 +41,11 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">查询及预定</a>
                     <dl class="layui-nav-child">
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/userPlaneList.jsp">查询航班</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="/jsp/userQueryFlight.jsp">查询航班</a></dd>
                         <dd class="left"><a href="javascript:;" lay-href="/jsp/userOrder.jsp">查看订单</a></dd>
                     </dl>
                 </li>
@@ -65,7 +63,7 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <iframe src="/jsp/userPlaneList.jsp" id="main" height="100%" width="100%"></iframe>
+        <iframe src="/jsp/welcome.jsp" id="main" height="100%" width="100%"></iframe>
     </div>
 
     <div class="layui-footer">
@@ -86,7 +84,6 @@
         });
     });
 </script>
-
 </body>
 </html>
 
