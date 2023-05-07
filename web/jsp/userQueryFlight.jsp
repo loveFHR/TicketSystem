@@ -25,19 +25,15 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">始发地</label>
                                 <div class="layui-input-inline">
-                                    <select id="startAdd" name="startAdd" lay-verify="required">
-                                        <option value="">--请选择始发地--</option>
-
-                                    </select>
+                                    <input id="inputStartAdd" type="text" name="startAdd" autocomplete="off" class="layui-input" list="startAdd" placeholder="请输入或选择始发地">
+                                    <datalist id="startAdd"></datalist>
                                 </div>
                             </div>
-
                             <div class="layui-form-item">
                                 <label class="layui-form-label">目的地</label>
                                 <div class="layui-input-inline">
-                                    <select id="targetAdd" name="targetAdd" lay-verify="required">
-                                        <option value="">--请选择目的地--</option>
-                                    </select>
+                                    <input id="inputTargetAdd" type="text" name="targetAdd" autocomplete="off" class="layui-input" list="targetAdd" placeholder="请先选择始发地" >
+                                    <datalist id="targetAdd" name="startAdd"></datalist>
                                 </div>
                             </div>
 
@@ -71,6 +67,75 @@
                 form = layui.form,
                 table = layui.table;
 
+            /**
+             * 页面加载完成发送请求，列出始发地
+             */
+            $.ajax({
+                type:"GET",
+                url:'/flight?method=selectAllStartAdd',
+                dataType:'json',
+                success:function (res){
+                    console.log(res)
+                    for (var i=0; i<res.count; i++){
+                        $('#startAdd').append('<option>'+res.data[i]+'</option>')
+                    }
+                }
+            })
+
+            /**
+             * 监听搜索操作
+             */
+            form.on('submit(data-search-btn)', function (data) {
+                var result = JSON.stringify(data.field);
+                layer.alert(result, {
+                    title: '最终的搜索信息'
+                });
+                //执行搜索重载
+                table.reload('currentTableId',{
+                    page: {
+                        curr: 1//重新从第 1 页开始
+                    }
+                    , where: {
+                        'startAdd':result.startAdd,
+                        'targetAdd':result.targetAdd,
+                        'date':result.startDate
+                    }
+                });
+
+            });
+
+            /*$('#inputStartAdd').blur(function (){  //当始发地输入框失去焦点
+                var startAdd = $('#inputStartAdd').val()
+                if (startAdd!=""){
+                    $('#inputTargetAdd').attr("placeholder","请输入或选择目的地")
+                    $('#inputTargetAdd').removeAttr("readonly")
+                    $.ajax({
+                        type:"get",
+                        url:'/flight?method=selectTargetAdd',
+                        dataType:'json',
+                        data:{
+                            "startAdd":startAdd
+                        },
+                        success:function (res){
+                            console.log(res)
+                           /!* for (var i=0; i<res.count; i++){
+                                $('#targetAdd').append('<option>'+res.data.targetAdd[i]+'</option>')
+                            }*!/
+                            //执行搜索重载
+                            table.reload('currentTableId',{
+                                page: {
+                                    curr: 1//重新从第 1 页开始
+                                }
+                                , where: {
+                                    startAdd : startAdd
+                                }
+                            });
+                        }
+                    })
+                }
+
+            })*/
+
             table.render({
                 elem: '#currentTableId',  //指定原始 table 容器的选择器或 DOM
                 url: '/flight?method=select',
@@ -78,11 +143,11 @@
                     {field: 'flightNumber', width: 120, title: '航班号', sort: true},
                     {field: 'startDate', width: 150, title: '起飞日期', sort: true},
                     {field: 'startTime', width: 150, title: '起飞时间', sort: true},
-                    {field: 'startAdd', width: 120, title: '始发地'},
-                    {field: 'targetAdd', width: 120, title: '目的地'},
+                    {field: 'startAdd', width: 120, title: '始发地', style: 'font-weight:bold'},
+                    {field: 'targetAdd', width: 120, title: '目的地',style: 'font-weight:bold'},
                     {field: 'totalSeats', width: 120, title: '总座位数'},
                     {field: 'availableSeats', width: 120, title: '可用座位数'},
-                    {field: 'price', width: 120, title: '价格',sort:true},
+                    {field: 'price', width: 120, title: '价格',sort:true,style:'color:orange'},
                     {title: '操作', width: 120, toolbar: '#currentTableBar', align: "center"}
                 ]],
                 limits: [5, 10, 15, 20, 25, 50, 100],//每页条数的选择项
@@ -93,21 +158,26 @@
             table.on('tool(currentTableFilter)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'book') {
-
-                    console.log(data)
-                    var index = layer.open({
-                        title: '订购航班',
-                        type: 2,
-                        shade: 0.2,
-                        maxmin:true,
-                        shadeClose: true,
-                        area: ['100%', '100%'],
-                        content: '/jsp/book.jsp',
-                    });
-                    $(window).on("resize", function () {
-                        layer.full(index);
-                    });
-                    return false;
+                    $.ajax({
+                        method:'POST',
+                        url:'/flight?method=updForm',
+                        data:{flightId:data.flightId},
+                        success:function () {
+                            var index = layer.open({
+                                title: '订购航班',
+                                type: 2,
+                                shade: 0.2,
+                                maxmin:true,
+                                shadeClose: true,
+                                area: ['100%', '100%'],
+                                content: '/jsp/book.jsp',
+                            });
+                            $(window).on("resize", function () {
+                                layer.full(index);
+                            });
+                            return false;
+                        }
+                    })
                 }
             });
             form.render()

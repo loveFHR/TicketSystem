@@ -67,6 +67,34 @@ public class FlightController extends HttpServlet {
             String delData = req.getParameter("delData");
             flightService.deleteFlightById(Integer.parseInt(delData));//删除航班
             resp.getWriter().write("success"); //向前端发送成功消息
+        } else if (method.equals("selectAllStartAdd")) {
+            List<String> startAdd = flightService.selectstartAdd();
+            Map<String,Object> map = new HashMap<>();
+            map.put("code",0);
+            map.put("msg","");
+            map.put("count",flightService.countAdd("start_add"));
+            map.put("data",startAdd);
+            resp.getWriter().write(JSONObject.toJSON(map).toString());
+        } else if (method.equals("selectTargetAdd")) {
+            String startAdd = req.getParameter("startAdd");
+            List<Flight> list = flightService.selectTargetAdd(startAdd);
+            Map<String,Object> map = new HashMap<>();
+            map.put("code",0);
+            map.put("msg","");
+            map.put("count",list.size());
+            map.put("data",list);
+            resp.getWriter().write(JSONObject.toJSON(map).toString());
+        } else if (method.equals("selectFlightByAddAndDate")) {
+            String startAdd = req.getParameter("startAdd");
+            String targetAdd = req.getParameter("targetAdd");
+            String date = req.getParameter("date");
+            List<Flight> list = flightService.selectFlightByAddAndDate(startAdd, targetAdd, date);
+            Map<String,Object> map = new HashMap<>();
+            map.put("code",0);
+            map.put("msg","");
+            map.put("count",list.size());
+            map.put("data",list);
+            resp.getWriter().write(JSONObject.toJSON(map).toString());
         }
     }
 }

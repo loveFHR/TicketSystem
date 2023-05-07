@@ -38,4 +38,24 @@ public class FlightServiceImpl implements FlightService {
     public void deleteFlightById(Integer flightId) {
         flightDao.deleteFlightById(flightId);
     }
+
+    @Override
+    public List<String> selectstartAdd() {
+        return flightDao.selectstartAdd();
+    }
+
+    @Override
+    public int countAdd(String address) {
+        return flightDao.countAdd(address);
+    }
+
+    @Override
+    public List<Flight> selectTargetAdd(String startAdd) {
+        return flightDao.selectTargetAdd(startAdd);
+    }
+
+    @Override
+    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date) {
+        return flightDao.selectFlightByAddAndDate(startAdd,targetAdd,date);
+    }
 }

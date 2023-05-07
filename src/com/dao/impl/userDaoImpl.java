@@ -141,7 +141,7 @@ public class userDaoImpl implements UserDao {
         ResultSet rs = null;
         try{
             conn = JNDIUtils.getConnection();
-            String sql = "select count(*) from `order`";
+            String sql = "select count(*) from `user`";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             if (rs.next()) {

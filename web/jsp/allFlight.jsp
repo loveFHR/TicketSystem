@@ -29,19 +29,19 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">航班号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" name="flightID" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">始发地</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
+                                <input type="text" name="startAdd" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">日期</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
+                                <input type="text" name="startDate" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -219,7 +219,6 @@
                         flightId:data.flightId
                     },
                     success:function (data){
-                        console.log(data)
                         var index = layer.open({
                             title: '编辑航班',
                             type: 2,

@@ -13,4 +13,8 @@ public interface FlightService {
     Flight selectFlightById(Integer flightId);
     void updateFlightById(Integer flightId,Flight flight);
     void deleteFlightById(Integer flightId);
+    List<String> selectstartAdd();
+    int countAdd(String address);
+    List<Flight> selectTargetAdd(String startAdd);
+    List<Flight> selectFlightByAddAndDate(String startAdd,String targetAdd, String date);
 }

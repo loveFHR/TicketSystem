@@ -191,4 +191,136 @@ public class FlightDaoImpl implements FlightDao {
             JNDIUtils.close(conn,ps,null);
         }
     }
+
+    /**
+     * 查询始发地
+     * @return
+     */
+    @Override
+    public List<String> selectstartAdd() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "select distinct start_add from `flight`";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            List<String> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+            return list;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
+
+    /**
+     * 查询始发地和目的地的数量
+     * @param address
+     * @return
+     */
+    @Override
+    public int countAdd(String address) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "SELECT  count(DISTINCT "+ address +") from flight";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return 0;
+    }
+
+    /**
+     * 通过始发地查目的地
+     * @param startAdd
+     * @return
+     */
+    @Override
+    public List<Flight> selectTargetAdd(String startAdd) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "select * from `flight` where start_add like ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+startAdd+"%");
+            rs = ps.executeQuery();
+
+            List<Flight> list = new ArrayList<>();
+            while (rs.next()) {
+                Flight flight = new Flight();
+                flight.setFlightNumber(rs.getString("f_number"));
+                flight.setStartDate(rs.getDate("start_date").toString());//把数据库Date类型转成字符串
+                flight.setStartTime(rs.getTime("start_time").toString());//把数据库Time类型转成字符串
+                flight.setStartAdd(rs.getString("start_add"));
+                flight.setTargetAdd(rs.getString("target_add"));
+                flight.setTotalSeats(rs.getInt("total_seats"));
+                flight.setAvailableSeats(rs.getInt("available_seats"));
+                flight.setPrice(rs.getDouble("price"));
+                list.add(flight);
+            }
+            return list;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "select * from `flight` where start_add like ? and target_add like ? and start_date like ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+startAdd+"%");
+            ps.setString(2, "%"+targetAdd+"%");
+            ps.setString(3, "%"+date+"%");
+            rs = ps.executeQuery();
+
+            List<Flight> list = new ArrayList<>();
+            while (rs.next()) {
+                Flight flight = new Flight();
+                flight.setFlightNumber(rs.getString("f_number"));
+                flight.setStartDate(rs.getDate("start_date").toString());//把数据库Date类型转成字符串
+                flight.setStartTime(rs.getTime("start_time").toString());//把数据库Time类型转成字符串
+                flight.setStartAdd(rs.getString("start_add"));
+                flight.setTargetAdd(rs.getString("target_add"));
+                flight.setTotalSeats(rs.getInt("total_seats"));
+                flight.setAvailableSeats(rs.getInt("available_seats"));
+                flight.setPrice(rs.getDouble("price"));
+                list.add(flight);
+            }
+            return list;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
 }
