@@ -30,12 +30,33 @@
                             <div> <%--第一页--%>
                                 <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
                                     <div class="layui-form-item">
+                                        <label class="layui-form-label">用户名:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">${order.user.name}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">身份证:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">${order.user.idNumber}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label required">性别:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">${order.user.gender}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
                                         <label class="layui-form-label">航班席位:</label>
                                         <div class="layui-input-block">
                                             <select name="cabin1" id="cabin1" lay-verify="required">
-                                                <option value="economyClass">经济舱</option>
-                                                <option value="businessClass">商务舱</option>
-                                                <option value="firstClass">头等舱</option>
+                                                <option value="经济舱">经济舱</option>
+                                                <option value="商务舱">商务舱</option>
+                                                <option value="头等舱">头等舱</option>
                                             </select>
 
                                         </div>
@@ -44,7 +65,7 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">备注说明:</label>
                                         <div class="layui-input-block">
-                                            <textarea placeholder="订单备注" value="" class="layui-textarea"></textarea>
+                                            <textarea placeholder="订单备注" id="notes1" class="layui-textarea"></textarea>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -61,25 +82,25 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">始发地:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">${flight.startAdd}</div>
+                                            <div class="layui-form-mid layui-word-aux">${order.flight.startAdd}</div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">目的地:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">${flight.targetAdd}</div>
+                                            <div class="layui-form-mid layui-word-aux">${order.flight.targetAdd}</div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">日期:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">${flight.startDate}</div>
+                                            <div class="layui-form-mid layui-word-aux">${order.flight.startDate}</div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">时间:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">${flight.startTime}</div>
+                                            <div class="layui-form-mid layui-word-aux">${order.flight.startTime}</div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -91,26 +112,26 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">价格:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">${flight.price}</div>
+                                            <div class="layui-form-mid layui-word-aux">${order.flight.price}元</div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">备注说明:</label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux"></div>
+                                            <div class="layui-form-mid layui-word-aux" id="notes2"></div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
                                             <button class="layui-btn" lay-submit lay-filter="formStep2">
-                                                &emsp;确认支付&emsp;
+                                                &emsp;确认支付${order.flight.price}元&emsp;
                                             </button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div>
+                            <div>//第三页
                                 <div style="text-align: center;margin-top: 90px;">
                                     <i class="layui-icon layui-circle"
                                        style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
@@ -121,7 +142,7 @@
                                 </div>
                                 <div style="text-align: center;margin-top: 50px;">
                                     <button class="layui-btn next">再买一张</button>
-                                    <button class="layui-btn layui-btn-primary">查看账单</button>
+                                    <button class="layui-btn layui-btn-primary">确定</button>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +150,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <script src="/layui/layui.js" charset="utf-8"></script>
@@ -140,9 +160,6 @@
             form = layui.form,
             step = layui.step;
 
-        console.log($('#cabin1').val())
-
-
         step.render({
             elem: '#stepForm',
             filter: 'stepForm',
@@ -150,7 +167,7 @@
             stepWidth: '750px',
             height: '500px',
             stepItems: [{
-                title: '选择席位'
+                title: '确认旅客信息'
             }, {
                 title: '确认航班信息'
             }, {
@@ -158,16 +175,17 @@
             }]
         });
 
-
         form.on('submit(formStep)', function (data) {
-            $('#cabin2').innerHTML = $('#cabin1').val()
+            $('#cabin2').text($('#cabin1').val())
+            $('#notes2').text($('#notes1').val())
             step.next('#stepForm');
-            return false;
+            return false;  // 阻止默认 form 跳转
         });
 
         form.on('submit(formStep2)', function (data) {
+
             step.next('#stepForm');
-            return false;
+            return false;  // 阻止默认 form 跳转
         });
 
         $('.pre').click(function () {

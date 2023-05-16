@@ -123,7 +123,7 @@
                 maxmin:true,
                 shadeClose: true,
                 area: ['100%', '100%'],
-                content: '/jsp/updateUser.jsp',
+                content: './updateUser.jsp',
               });
               $(window).on("resize", function () {
                 layer.full(index);

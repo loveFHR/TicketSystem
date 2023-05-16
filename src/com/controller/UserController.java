@@ -32,32 +32,43 @@ public class UserController extends HttpServlet {
         HttpSession session = req.getSession();
         String method = req.getParameter("method");
 
-        if (method.equals("select")) {
-            String page = req.getParameter("page");
-            String limit = req.getParameter("limit");
-            List<User> list = userService.selectAllUser(page, limit);
-            Map<String,Object> map = new HashMap<>();
-            map.put("code",0);
-            map.put("msg","");
-            map.put("count",userService.userCount());
-            map.put("data",list);
-            resp.getWriter().write(JSONObject.toJSON(map).toString());
-        } else if (method.equals("updForm")){
-            String userId = req.getParameter("userId");
-            System.out.println(userId);
-            User user = userService.selectUserById(Integer.parseInt(userId));//查询出选中要修改用户的信息
-            System.out.println(user);
-            session.setAttribute("user",user); //通过session传数据让前端通过el表达式接收
-            resp.getWriter().write("success");
-        } else if (method.equals("update")) {
-            String updateData = req.getParameter("updateData");
-            User user = JSON.parseObject(updateData, User.class);//将json字符串转为用户对象
-            userService.updateUserById(user.getUserId(),user);
-            resp.getWriter().write("success");
-        } else if (method.equals("delete")) {
-            String delData = req.getParameter("delData");
-            userService.deleteUserById(Integer.parseInt(delData));//删除用户
-            resp.getWriter().write("success"); //向前端发送成功消息
+        switch (method) {
+            case "select": //查询所有用户
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<User> list = userService.selectAllUser(page, limit);
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", 0);
+                map.put("msg", "");
+                map.put("count", userService.userCount());
+                map.put("data", list);
+                resp.getWriter().write(JSONObject.toJSON(map).toString());
+                break;
+            case "updForm": { //通过id查找用户
+                String userId = req.getParameter("userId");
+                User user = userService.selectUserById(Integer.parseInt(userId));//查询出选中要修改用户的信息
+
+                session.setAttribute("user", user); //通过session传数据让前端通过el表达式接收
+
+                resp.getWriter().write("success");
+                break;
+            }
+            case "update": { //修改用户
+                String updateData = req.getParameter("updateData");
+                User user = JSON.parseObject(updateData, User.class);//将json字符串转为用户对象
+
+                userService.updateUserById(user.getUserId(), user);
+                resp.getWriter().write("success");
+                break;
+            }
+            case "delete": { //删除用户
+                String delData = req.getParameter("delData");
+                userService.deleteUserById(Integer.parseInt(delData));//删除用户
+
+                resp.getWriter().write("success"); //向前端发送成功消息
+
+                break;
+            }
         }
     }
 }

@@ -19,23 +19,11 @@
         <div class="layui-logo layui-hide-xs layui-bg-black">
             用户系统
         </div>
-        <ul class="layui-nav layui-layout-left" lay-bar="disabled">
-            <li class="layui-nav-item">您的身份:大帅逼</li>
-        </ul>
         <ul class="layui-nav layui-layout-right ">
-            <li class="layui-nav-item" lay-unselect>
-                <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
-            </li>
-            <li class="layui-nav-item" lay-unselect>
-                <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>
-            </li>
-            <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
-                <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
-            </li>
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                 <a href="javascript:;" id="user-name">
                     <img src="/image/头像.png" class="layui-nav-img">
-                    ${name}
+                    ${name}(旅客)
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">修改资料</a></dd>
@@ -49,20 +37,20 @@
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <!-- 左侧导航区域-->
             <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">查询及预定</a>
                     <dl class="layui-nav-child">
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/userQueryFlight.jsp">查询航班</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/userOrder.jsp">查看订单</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/userQueryFlight.jsp">查询航班</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/userOrder.jsp">查看订单</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">机票</a>
                     <dl class="layui-nav-child">
                         <dd class="left"><a href="javascript:;" lay-href="/jsp/userTicket.jsp">查看机票</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/rebook.jsp">改签</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/rebook.jsp">改签</a></dd>
                         <dd class="left"><a href="javascript:;" lay-href="/jsp/returnTicket.jsp">退票</a></dd>
                     </dl>
                 </li>
@@ -72,12 +60,12 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <iframe src="/jsp/welcome.jsp" id="main" height="100%" width="100%"></iframe>
+        <iframe src="/jsp/user/welcome.jsp" id="main" height="100%" width="100%"></iframe>
     </div>
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        @冯华荣真帅,杨飞扬也帅
+        @冯华荣真帅,杨飞扬也帅，乔一鸣也不赖
     </div>
 </div>
 <script src="/layui/layui.js"></script>
@@ -86,9 +74,9 @@
         var element = layui.element;
         var $=layui.jquery;
         $(document).ready(function (){
-            $(".left>a").click(function (e){
+            $(".left>a").click(function (e){ //当左侧导航栏下的超链接被点击时
                 e.preventDefault();
-                $('#main').attr("src",$(this).attr("lay-href"));
+                $('#main').attr("src",$(this).attr("lay-href"));//将iframe的src值改为被点击的超链接的lay-href的值
             });
         });
     });

@@ -57,7 +57,7 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <iframe src="/jsp/allUser.jsp" id="main" height="100%" width="100%"></iframe>
+        <iframe src="/jsp/company/allUser.jsp" id="main" height="100%" width="100%"></iframe>
     </div>
 
     <div class="layui-footer">

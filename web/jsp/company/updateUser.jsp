@@ -33,21 +33,22 @@
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label required">用户名</label>
-    <div class="layui-input-block">
+    <div class="layui-input-inline">
       <input type="text" name="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" class="layui-input" value="${user.name}">
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label required">密码</label>
-    <div class="layui-input-block">
+    <div class="layui-input-inline">
       <input type="password" name="password" lay-verify="required" lay-reqtext="密码不能为空" placeholder="请输入密码" class="layui-input" value="${user.password}">
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label required">性别</label>
-    <div class="layui-input-block">
-      <input type="radio" name="gender" value="男" title="男">
-      <input type="radio" name="gender" value="女" title="女">
+    <div class="layui-input-inline">
+      <input type="text" lay-verify="required" name="gender" value="${user.gender}" class="layui-input">
+        <input type="radio" id="male" name="gender" value="男" title="男">
+        <input type="radio" id="female" name="gender" value="女" title="女">
     </div>
   </div>
   <div class="layui-form-item">
@@ -71,7 +72,14 @@
     var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-
+    $('#male').prop("checked",true)
+    if ('${user.gender}' === '男'){
+      console.log("。。。。。。。。。。。。。。。")
+      $('#male').prop("checked",true)
+      $('#male').attr("abc","123")
+    } else {
+      $('#female').prop("checked",true)
+    }
     //监听提交
     form.on('submit(saveBtn)', function (data) {
       /* 18位身份证的正则表达式验证

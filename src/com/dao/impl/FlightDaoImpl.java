@@ -305,6 +305,7 @@ public class FlightDaoImpl implements FlightDao {
             List<Flight> list = new ArrayList<>();
             while (rs.next()) {
                 Flight flight = new Flight();
+                flight.setFlightId(rs.getInt("f_id"));
                 flight.setFlightNumber(rs.getString("f_number"));
                 flight.setStartDate(rs.getDate("start_date").toString());//把数据库Date类型转成字符串
                 flight.setStartTime(rs.getTime("start_time").toString());//把数据库Time类型转成字符串

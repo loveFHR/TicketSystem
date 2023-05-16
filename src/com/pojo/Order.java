@@ -1,93 +1,60 @@
 package com.pojo;
 
 public class Order {
-    private Integer id;
-    private String name;
-    private String gender;
-    private String idCard;//身份证
-    private String travelTime;
-    private String startAdd;
-    private String targetAdd;
+    private Integer orderId;
+    private String cabin;//舱位
+    private User user;
+    private Flight flight;
 
     public Order() {
     }
 
-    public Order(Integer id, String name, String gender, String idCard, String travelTime, String startAdd, String targetAdd) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.idCard = idCard;
-        this.travelTime = travelTime;
-        this.startAdd = startAdd;
-        this.targetAdd = targetAdd;
+    public Order(Integer orderId, String cabin, User user, Flight flight) {
+        this.orderId = orderId;
+        this.cabin = cabin;
+        this.user = user;
+        this.flight = flight;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
-    public String getName() {
-        return name;
+    public String getCabin() {
+        return cabin;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCabin(String cabin) {
+        this.cabin = cabin;
     }
 
-    public String getGender() {
-        return gender;
+    public User getUser() {
+        return user;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getIdCard() {
-        return idCard;
+    public Flight getFlight() {
+        return flight;
     }
 
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    public String getTravelTime() {
-        return travelTime;
-    }
-
-    public void setTravelTime(String travelTime) {
-        this.travelTime = travelTime;
-    }
-
-    public String getStartAdd() {
-        return startAdd;
-    }
-
-    public void setStartAdd(String startAdd) {
-        this.startAdd = startAdd;
-    }
-
-    public String getTargetAdd() {
-        return targetAdd;
-    }
-
-    public void setTargetAdd(String targetAdd) {
-        this.targetAdd = targetAdd;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", idCard='" + idCard + '\'' +
-                ", travelTime='" + travelTime + '\'' +
-                ", startAdd='" + startAdd + '\'' +
-                ", targetAdd='" + targetAdd + '\'' +
+                "orderId=" + orderId +
+                ", cabin='" + cabin + '\'' +
+                ", user=" + user +
+                ", flight=" + flight +
                 '}';
     }
 }

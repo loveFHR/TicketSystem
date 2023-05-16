@@ -29,19 +29,19 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">航班号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="flightID" autocomplete="off" class="layui-input">
+                                <input type="text" id="flightID" name="flightID" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">始发地</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="startAdd" autocomplete="off" class="layui-input">
+                                <input type="text" id="startAdd" name="startAdd" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">日期</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="startDate" autocomplete="off" class="layui-input">
+                                <input type="text" id="startDate" name="startDate" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -105,22 +105,25 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
+            //var result = JSON.stringify(data.field);
+            var flightId =  $('#flightID').val()
+            var startAdd = $('#startAdd').val()
+            var startDate = $('#startDate').val()
+            console.log(flightId)
+            /*layer.alert(result, {
                 title: '最终的搜索信息'
-            });
-
+            });*/
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1//重新从第 1 页开始
                 }
                 , where: {
-                    searchParams: result
+                    'flightId':flightId,
+                    'startAdd':startAdd,
+                    'startDate':startDate
                 }
-            }, 'data');
-
-            return false;
+            });
         });
 
         /**
@@ -135,7 +138,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/jsp/addFlight.jsp',
+                    content: './addFlight.jsp',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -226,7 +229,7 @@
                             maxmin:true,
                             shadeClose: true,
                             area: ['100%', '100%'],
-                            content: '/jsp/updateFlight.jsp',
+                            content: './updateFlight.jsp',
                         });
                         $(window).on("resize", function () {
                             layer.full(index);
