@@ -46,7 +46,7 @@
 
                             <div class="layui-inline">
                                 <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                                <button type="reset" class="layui-btn layui-btn-primary"><i class="layui-icon-refresh"></i> 重置</button>
+                                <button type="reset" class="layui-btn layui-btn-primary"><i class="fa-spinner"></i> 重置</button>
                             </div>
                     </form>
                 </div>
@@ -128,7 +128,7 @@
                 if (obj.event === 'book') {
                     $.ajax({
                         method:'POST',
-                        url:'/order?method=insert',
+                        url:'/order?method=selectUserAndFlightById',
                         data:{
                             flightId:data.flightId,
                             userName:'${name}'

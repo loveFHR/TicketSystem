@@ -15,4 +15,5 @@ public interface FlightDao {
     int countAdd(String address);
     List<Flight> selectTargetAdd(String startAdd);
     List<Flight> selectFlightByAddAndDate(String startAdd,String targetAdd, String date);
+    void updateSeats(Integer flightId, String option);
 }

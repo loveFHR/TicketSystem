@@ -3,9 +3,10 @@ package com.pojo;
 public class Order {
     private Integer orderId;
     private String cabin;//舱位
+    private String notes;//备注
+    private String status;//状态
     private User user;
     private Flight flight;
-
     public Order() {
     }
 
@@ -32,6 +33,22 @@ public class Order {
         this.cabin = cabin;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public User getUser() {
         return user;
     }
@@ -53,6 +70,8 @@ public class Order {
         return "Order{" +
                 "orderId=" + orderId +
                 ", cabin='" + cabin + '\'' +
+                ", notes='" + notes + '\'' +
+                ", status='" + status + '\'' +
                 ", user=" + user +
                 ", flight=" + flight +
                 '}';

@@ -109,7 +109,7 @@
                             parent.layer.close(iframeIndex);
                         });
                     } else {
-                        layer.msg('添加失败，请检查航班号是否正确', {icon:5, time:2000})
+                        layer.msg('添加失败，请检查航班信息是否正确', {icon:5, time:2000})
                     }
                 }
             })

@@ -324,4 +324,27 @@ public class FlightDaoImpl implements FlightDao {
         }
         return null;
     }
+
+    /**
+     * 修改可用座位数
+     * @param flightId
+     * @param option "+" or "-"
+     */
+    @Override
+    public void updateSeats(Integer flightId, String option) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "update flight set available_seats=available_seats"+option+"1 where f_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,flightId);
+            ps.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,null);
+        }
+    }
 }

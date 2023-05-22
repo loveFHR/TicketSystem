@@ -124,25 +124,24 @@
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep3">暂时预定</button>
                                             <button class="layui-btn" lay-submit lay-filter="formStep2">
-                                                &emsp;确认支付${order.flight.price}元&emsp;
+                                                确认支付${order.flight.price}元
                                             </button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div>//第三页
+                            <div><%--第三页--%>
                                 <div style="text-align: center;margin-top: 90px;">
                                     <i class="layui-icon layui-circle"
                                        style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
-                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
-                                        支付成功
+                                    <div id="complete" style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
                                     </div>
-                                    <div style="font-size: 14px;color: #666;margin-top: 20px;">正在为您生成订单...</div>
+                                    <div id="complete2" style="font-size: 14px;color: #666;margin-top: 20px;"></div>
                                 </div>
                                 <div style="text-align: center;margin-top: 50px;">
-                                    <button class="layui-btn next">再买一张</button>
-                                    <button class="layui-btn layui-btn-primary">确定</button>
+                                    <button class="layui-btn" id="determine">确定</button>
                                 </div>
                             </div>
                         </div>
@@ -183,14 +182,35 @@
         });
 
         form.on('submit(formStep2)', function (data) {
+            $('#complete').text("支付成功")
+            $('#complete2').text("已为您生成订单，请及时取票")
             $.ajax({
                 type:"POST",
-                url:"/order"
+                url:"/order?method=insert",
+                data:{
+                    'cabin':$('#cabin1').val(),
+                    'notes':$('#notes1').val(),
+                    'status':'已支付'
+                }
             })
             step.next('#stepForm');
             return false;  // 阻止默认 form 跳转
         });
-
+        form.on('submit(formStep3)', function (data){
+            $('#complete').text("预定成功")
+            $('#complete2').text("已为您生成订单，请尽快完成支付")
+            $.ajax({
+                type:"POST",
+                url:"/order?method=insert",
+                data:{
+                    'cabin':$('#cabin1').val(),
+                    'notes':$('#notes1').val(),
+                    'status':'未支付'
+                }
+            })
+            step.next('#stepForm');
+            return false;  // 阻止默认 form 跳转
+        });
         $('.pre').click(function () {
             step.pre('#stepForm');
         });
@@ -198,6 +218,11 @@
         $('.next').click(function () {
             step.next('#stepForm');
         });
+        $('#determine').click(function () {
+            // 关闭弹出层
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(iframeIndex);
+        })
     })
 </script>
 </body>
