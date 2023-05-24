@@ -37,8 +37,12 @@ public class OrderController extends HttpServlet {
                 String userName = req.getParameter("userName");
                 String flightId = req.getParameter("flightId");
                 Order order = orderService.selectUserAndFlightById(userName, Integer.parseInt(flightId));
-                session.setAttribute("order", order);
-                resp.getWriter().write("success");
+                if(order.getFlight().getAvailableSeats() <= 0 ) {
+                    resp.getWriter().write("fail");
+                } else {
+                    session.setAttribute("order", order);
+                    resp.getWriter().write("success");
+                }
                 break;
             }
             case "insert": {
@@ -55,9 +59,39 @@ public class OrderController extends HttpServlet {
                 session.removeAttribute("order");
                 break;
             }
-            case "selectByUserName":
+            case "selectByUserName": {
                 String name = req.getParameter("name");
-                List<Order> list = orderService.selectByUserName(name);
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<Order> list = orderService.selectByUserName(name,page,limit);
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", 0);
+                map.put("msg", "");
+                map.put("count", list.size());
+                map.put("data", list);
+                resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
+                break;
+            }
+            case "repay": {
+                String orderId = req.getParameter("orderId");
+                String status = req.getParameter("status");
+                orderService.updateStatus(Integer.parseInt(orderId),status);
+                resp.getWriter().write("success");
+                break;
+            }
+            case "cancel": {
+                String orderId = req.getParameter("orderId");
+                String status = req.getParameter("status");
+                String flightId = req.getParameter("flightId");
+                orderService.updateStatus(Integer.parseInt(orderId),status);
+                flightService.updateSeats(Integer.parseInt(flightId),"+");
+                resp.getWriter().write("success");
+                break;
+            }
+            case "selectAll": {
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<Order> list = orderService.selectAllOrder(page, limit);
                 Map<String,Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");
@@ -65,6 +99,32 @@ public class OrderController extends HttpServlet {
                 map.put("data", list);
                 resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
                 break;
+            }
+            case "selectTicketByName": {
+                String name = req.getParameter("name");
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<Order> list = orderService.selectTicketByName(name,page,limit);
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", 0);
+                map.put("msg", "");
+                map.put("count", list.size());
+                map.put("data", list);
+                resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
+                break;
+            }
+            case "print": {
+                String orderId = req.getParameter("orderId");
+                orderService.updateStatus(Integer.parseInt(orderId),"已出票");
+                resp.getWriter().write("success");
+                break;
+            }
+            case "delete": {
+                String orderId = req.getParameter("orderId");
+                orderService.updateStatus(Integer.parseInt(orderId),"已退票");
+                resp.getWriter().write("success");
+                break;
+            }
         }
     }
 }

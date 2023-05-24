@@ -10,60 +10,138 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>旅客管理</title>
+    <title></title>
     <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/layui/css/public.css" media="all">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/layui/css/layui.css" rel="stylesheet">
 </head>
 <body>
-<div class="layuimini-container">
-    <div class="layuimini-main">
-        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
-    </div>
+<div style="padding: 16px;">
+    <table class="layui-hide" id="ID-table-demo-css" lay-filter="currentTableFilter"></table>
 </div>
-<script src="/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="ID-table-demo-css-1">
+    <div style="align-content: center">
+        <h3>{{d.flight.startAdd}}<span class="to">→</span>{{d.flight.targetAdd}}</h3>
+        <p>{{d.flight.startDate}}  {{d.flight.startTime}}</p>
+        <p>{{d.cabin}}</p>
+        <p>￥{{d.flight.price}}元</p>
+        <p>姓名:{{d.user.name}}  身份证:{{d.user.idNumber}}</p>
+    </div>
+</script>
+<script type="text/html" id="ID-table-demo-css-2">
+    <div >
+        <p>{{d.status}}</p>
+    </div>
+</script>
+<script type="text/html" id="ID-table-demo-css-3">
+    <div >
+        <p>创建时间:{{d.createTime}}</p>
+        <p>修改时间:{{d.updateTime}}</p>
+    </div>
+</script>
+<script src="/layui/layui.js"></script>
 <script>
-    layui.use(['form', 'table'], function () {
-        var $ = layui.jquery,
-            form = layui.form,
-            table = layui.table;
+    layui.use(['table'], function(){
+        var $ = layui.$
+        var table = layui.table;
 
+        // 创建渲染实例
         table.render({
-            elem: '#currentTableId',
-            url: '/order?method=selectByUserName&name=${name}',
-            toolbar: '#toolbarDemo',
-            defaultToolbar: ['filter', 'exports', 'print'],
-            skin: 'line',
-            cols: [[
-                {field: 'user.name',  title: '用户名', templet:function (res){return res.user.name}},
-                {field: 'user.idNumber',  title: '身份证',templet:function (res){return res.user.idNumber}},
-                {field: 'flight.flightNumber',  title: '航班号',templet:function (res){return res.flight.flightNumber}},
-                {field: 'flight.startDate',  title: '出发日期',templet:function (res){return res.flight.startDate}},
-                {field: 'flight.startTime',  title: '出发时间',templet:function (res){return res.flight.startTime}},
-                {field: 'flight.startAdd',  title: '始发地',templet:function (res){return res.flight.startAdd},style: 'font-weight:bold'},
-                {field: 'flight.targetAdd',  title: '目的地',templet:function (res){return res.flight.targetAdd},style: 'font-weight:bold'},
-                {field: 'cabin',  title: '舱位'},
-                {field: 'notes',  title: '备注'},
-                {field: 'status',  title: '状态'},
-                //自定义列
-                {
-                    title: '操作',
-                    templet: function(res) {
-                        console.log(res)
-                        console.log(res.flight.flightNumber)
+            elem: '#ID-table-demo-css'
+            ,url:'/order?method=selectByUserName&name=${name}'
+            ,page: true
+            ,lineStyle: 'height: 180px;' // 定义表格的多行样式
+            ,css: [
+                '.layui-table-page{text-align: center;}' // 让分页栏居中
+            ].join('')
+            ,cols: [[
+                {minWidth:600, templet: '#ID-table-demo-css-1'},
+                {templet: '#ID-table-demo-css-3'},
+                {templet: '#ID-table-demo-css-2'},
+                {templet: function(res) {
                         // 判断特定要求，添加按钮
                         if (res.status === '未支付') {
-                            return '<button class="layui-btn layui-btn-warm">立即支付</button>';
+                            return '<a class="layui-btn layui-btn-warm layui-btn-radius" lay-event="repay">立即支付</a>' +
+                                '<a class="layui-btn layui-btn-danger layui-btn-radius" lay-event="cancel">取消订单</a>';
                         } else if (res.status === '已支付') {
-                            return '<button class="layui-btn layui-btn-warm">打印出票</button>'
+                            return '<a class="layui-btn layui-btn-radius" lay-event="print">打印出票</a>' +
+                                '<a class="layui-btn layui-btn-danger layui-btn-radius" lay-event="return">取消订单</a>'
+                        } else if (res.status === '已出票'){
+                            return "请到'我的机票'查看";
                         } else {
-                            return '';
+                            return ''
                         }
-                    }
-                }
+                    }}
             ]]
+        });
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'repay') {
+                layer.confirm('确认支付吗', function (index) {
+                    $.ajax({
+                        type:'POST',
+                        url:'/order?method=repay',
+                        data:{'orderId':data.orderId,'status':'已支付'},
+                        success:function (res){
+                            if (res === 'success'){
+                                layer.msg('支付成功',{
+                                    offset: '15px'
+                                    ,icon: 1
+                                    ,time: 1500
+                                });
+                                table.reload('ID-table-demo-css')
+                                layer.close(index);
+                            } else
+                                layer.alert("支付失败!")
+                        }
+                    })
+                });
+            } else if (obj.event === 'cancel') {
+                layer.confirm('确定取消吗', function (index) {
+                    $.ajax({
+                        type:'POST',
+                        url:'/order?method=cancel',
+                        data:{'orderId':data.orderId,'flightId':data.flight.flightId,'status':'已取消'},
+                        success:function (res){
+                            if (res === 'success'){
+                                table.reload('ID-table-demo-css')
+                                layer.close(index);
+                            } else
+                                layer.msg("支付失败!")
+                        }
+                    })
+                })
+            }else if (obj.event === 'return') {
+                layer.confirm('确定取消吗，取消将返还购票费用', function (index) {
+                    $.ajax({
+                        type:'POST',
+                        url:'/order?method=cancel',
+                        data:{'orderId':data.orderId,'flightId':data.flight.flightId,'status':'已取消'},
+                        success:function (res){
+                            if (res === 'success'){
+                                table.reload('ID-table-demo-css')
+                                layer.close(index);
+                            } else
+                                layer.msg("支付失败!")
+                        }
+                    })
+                })
+            } else if (obj.event === 'print'){
+                layer.confirm('确定打印吗',function (index) {
+                    $.ajax({
+                        type:'POST',
+                        //url:'/ticket?method=insert',
+                        url:'/order?method=print',
+                        data:{'orderId':data.orderId},
+                        success:function (res) {
+                            if (res === 'success'){
+                                table.reload('ID-table-demo-css')
+                                layer.close(index);
+                            }
+                        }
+                    })
+                })
+            }
         });
     });
 </script>

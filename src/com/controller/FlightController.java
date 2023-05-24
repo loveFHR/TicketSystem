@@ -98,22 +98,13 @@ public class FlightController extends HttpServlet {
                 resp.getWriter().write(JSONObject.toJSON(map).toString());
                 break;
             }
-            case "selectTargetAdd": {
-                String startAdd = req.getParameter("startAdd");
-                List<Flight> list = flightService.selectTargetAdd(startAdd);
-                Map<String, Object> map = new HashMap<>();
-                map.put("code", 0);
-                map.put("msg", "");
-                map.put("count", list.size());
-                map.put("data", list);
-                resp.getWriter().write(JSONObject.toJSON(map).toString());
-                break;
-            }
             case "selectFlightByAddAndDate": {
                 String startAdd = req.getParameter("startAdd");
                 String targetAdd = req.getParameter("targetAdd");
                 String startDate = req.getParameter("startDate");
-                List<Flight> list = flightService.selectFlightByAddAndDate(startAdd, targetAdd, startDate);
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<Flight> list = flightService.selectFlightByAddAndDate(startAdd, targetAdd, startDate,page,limit);
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");

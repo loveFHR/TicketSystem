@@ -13,6 +13,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/layui/css/public.css" media="all">
+    <style>
+        .layui-table-cell{
+            height:56px;
+            line-height: 56px;
+        }
+
+    </style>
 </head>
 <body>
     <div class="layuimini-container">
@@ -32,8 +39,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">目的地</label>
                                 <div class="layui-input-inline">
-                                    <input id="inputTargetAdd" type="text" name="targetAdd" autocomplete="off" class="layui-input" list="targetAdd" placeholder="请输入目的地" >
-                                    <datalist id="targetAdd" ></datalist>
+                                    <input id="inputTargetAdd" type="text" name="targetAdd" autocomplete="off" class="layui-input" placeholder="请输入目的地" >
                                 </div>
                             </div>
 
@@ -45,8 +51,11 @@
                             </div>
 
                             <div class="layui-inline">
-                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                                <button type="reset" class="layui-btn layui-btn-primary"><i class="fa-spinner"></i> 重置</button>
+                                <button type="submit" class="layui-btn layui-btn-normal layui-btn-radius"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                                <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius">重置</button>
+                            </div>
+                            <div class="layui-form-item">
+                                <tip>直接点击查询可获得全部航班哦！</tip>
                             </div>
                     </form>
                 </div>
@@ -55,7 +64,7 @@
             <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
             <script type="text/html" id="currentTableBar">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="book">订购</a>
+                <a class="layui-btn layui-btn-normal layui-btn-radius" lay-event="book">订购</a>
             </script>
         </div>
     </div>
@@ -79,26 +88,7 @@
                     }
                 }
             })
-            table.render({ //渲染表格
-                elem: '#currentTableId',  //指定原始 table 容器的选择器或 DOM
-                url: '/flight?method=select',
-                id:'tableOne',
-                cols: [[ //表头
-                    {field: 'flightNumber', width: 120, title: '航班号', sort: true},
-                    {field: 'startDate', width: 150, title: '起飞日期', sort: true},
-                    {field: 'startTime', width: 150, title: '起飞时间', sort: true},
-                    {field: 'startAdd', width: 120, title: '始发地', style: 'font-weight:bold'},
-                    {field: 'targetAdd', width: 120, title: '目的地',style: 'font-weight:bold'},
-                    {field: 'totalSeats', width: 120, title: '总座位数'},
-                    {field: 'availableSeats', width: 120, title: '可用座位数'},
-                    {field: 'price', width: 120, title: '价格',sort:true,style:'color:orange'},
-                    {title: '操作', width: 120, toolbar: '#currentTableBar', align: "center"}
-                ]],
-                limits: [5, 10, 15, 20, 25, 50, 100],//每页条数的选择项
-                limit: 5, //每页默认显示5条数据
-                page: true,//开启分页
-                skin: 'line' //用于设定表格风格,line （行边框风格）
-            });
+
             /**
              * 监听搜索事件
              */
@@ -106,17 +96,26 @@
                 var startAdd = $('#inputStartAdd').val()
                 var targetAdd = $('#inputTargetAdd').val()
                 var startDate = $('#inputStartDate').val()
-                //执行搜索重载
-                table.reload('tableOne',{
-                    url:'/flight?method=selectFlightByAddAndDate&startAdd='+startAdd+'&targetAdd='+targetAdd+'&startDate'+startDate,
-                    page: {
-                        curr: 1//重新从第 1 页开始
-                    }
-                    , where: {
-                        startAdd:startAdd,
-                        targetAdd:targetAdd,
-                        startDate:startDate
-                    }
+
+                table.render({ //渲染表格
+                    elem: '#currentTableId',  //指定原始 table 容器的选择器或 DOM
+                    //url: '/flight?method=select',
+                    url:'/flight?method=selectFlightByAddAndDate&startAdd='+startAdd+'&targetAdd='+targetAdd+'&startDate='+startDate,
+                    id:'tableOne',
+                    cols: [[ //表头
+                        {field: 'flightNumber', width: 120, title: '航班号', sort: true},
+                        {field: 'startDate', width: 150, title: '起飞日期', sort: true},
+                        {field: 'startTime', width: 150, title: '起飞时间', sort: true},
+                        {field: 'startAdd', width: 150, title: '始发地', style: 'font-weight:bold;font-size:25px'},
+                        {field: 'targetAdd', width: 150, title: '目的地',style: 'font-weight:bold;font-size:25px'},
+                        {field: 'availableSeats', width: 150, title: '可用座位数'},
+                        {field: 'price', width: 150, title: '价格',sort:true,style:'color:orange'},
+                        {title: '操作', width: 150, toolbar: '#currentTableBar', align: "center"}
+                    ]],
+                    limits: [5, 10, 15, 20, 25, 50, 100],//每页条数的选择项
+                    limit: 5, //每页默认显示5条数据
+                    page: true,//开启分页
+                    skin: 'line' //用于设定表格风格,line （行边框风格）
                 });
                 return false
             });
@@ -133,19 +132,23 @@
                             flightId:data.flightId,
                             userName:'${name}'
                         },
-                        success:function () {
-                            var index = layer.open({
-                                title: '订购航班',
-                                type: 2,
-                                shade: 0.2,
-                                maxmin:true,
-                                shadeClose: true,
-                                area: ['100%', '100%'],
-                                content: '/jsp/user/book.jsp',
-                            });
-                            $(window).on("resize", function () {
-                                layer.full(index);
-                            });
+                        success:function (res) {
+                            if (res === 'success') {
+                                var index = layer.open({
+                                    title: '订购航班',
+                                    type: 2,
+                                    shade: 0.2,
+                                    maxmin:true,
+                                    shadeClose: true,
+                                    area: ['100%', '100%'],
+                                    content: '/jsp/user/book.jsp',
+                                });
+                                $(window).on("resize", function () {
+                                    layer.full(index);
+                                });
+                            }else {
+                                layer.alert("该航班暂无票，请等待他人取消订单或退票",3000)
+                            }
                             return false;// 阻止默认 table 跳转
                         }
                     })

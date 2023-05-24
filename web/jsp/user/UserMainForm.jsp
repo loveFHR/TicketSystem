@@ -15,19 +15,21 @@
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
+    <div class="layui-header header">
         <div class="layui-logo layui-hide-xs layui-bg-black">
+            <a class="logo" href="./welcome.jsp">
+                <img src="/image/logo.png">
+            </a>
             用户系统
         </div>
-        <ul class="layui-nav layui-layout-right ">
+        <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                 <a href="javascript:;" id="user-name">
                     <img src="/image/头像.png" class="layui-nav-img">
                     ${name}(旅客)
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">修改资料</a></dd>
-                    <dd><a href="">设置</a></dd>
+                    <dd><a href="" class="btn2">修改资料</a></dd>
                     <hr/>
                     <dd><a href="/CheckLogin?method=2">退出</a></dd>
                 </dl>
@@ -39,21 +41,9 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域-->
             <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">查询及预定</a>
-                    <dl class="layui-nav-child">
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/userQueryFlight.jsp">查询航班</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/userOrder.jsp">查看订单</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">机票</a>
-                    <dl class="layui-nav-child">
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/userTicket.jsp">查看机票</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/user/rebook.jsp">改签</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="/jsp/returnTicket.jsp">退票</a></dd>
-                    </dl>
-                </li>
+                <li class="layui-nav-item btn"><a href="javascript:;" lay-href="/jsp/user/userQueryFlight.jsp">查询航班</a></li>
+                <li class="layui-nav-item btn"><a href="javascript:;" lay-href="/jsp/user/userOrder.jsp">我的订单</a></li>
+                <li class="layui-nav-item btn"><a href="javascript:;" lay-href="/jsp/user/userTicket.jsp">我的机票</a></li>
             </ul>
         </div>
     </div>
@@ -74,7 +64,7 @@
         var element = layui.element;
         var $=layui.jquery;
         $(document).ready(function (){
-            $(".left>a").click(function (e){ //当左侧导航栏下的超链接被点击时
+            $(".btn>a ").click(function (e){ //当左侧导航栏下的超链接被点击时
                 e.preventDefault();
                 $('#main').attr("src",$(this).attr("lay-href"));//将iframe的src值改为被点击的超链接的lay-href的值
             });

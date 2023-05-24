@@ -29,13 +29,13 @@
               <div class="layui-inline">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="sex" autocomplete="off" class="layui-input">
+                  <input type="text" name="username" id="username" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">ID</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="city" autocomplete="off" class="layui-input">
+                  <input type="text" name="userId" id="userId" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
@@ -68,13 +68,13 @@
         toolbar: '#toolbarDemo',
         defaultToolbar: ['filter', 'exports', 'print'],
         cols: [[
-          {type: "checkbox", width: 50},
-          {field: 'userId', width: 80, title: 'ID', sort: true},
-          {field: 'name', width: 120, title: '用户名'},
-          {field: 'password', width: 150, title: '密码'},
-          {field: 'gender', width: 120, title: '性别', sort: true},
-          {field: 'idNumber', width: 150, title: '身份证'},
-          {title: '操作', width: 120, toolbar: '#currentTableBar', align: "center"}
+          {type: "checkbox" },
+          {field: 'userId', title: 'ID', sort: true},
+          {field: 'name',  title: '用户名'},
+          {field: 'password', title: '密码'},
+          {field: 'gender', title: '性别', sort: true},
+          {field: 'idNumber', title: '身份证'},
+          {title: '操作', toolbar: '#currentTableBar', align: "center"}
         ]],
         limits: [5, 10, 15, 20, 25, 50, 100],//每页可选数据数
         limit: 5, //每页默认显示5条数据
@@ -84,20 +84,19 @@
 
       // 监听搜索操作
       form.on('submit(data-search-btn)', function (data) {
-        var result = JSON.stringify(data.field);
-        layer.alert(result, {
-          title: '最终的搜索信息'
-        });
+        var name = $('#username').val()
+        var userId = $('#userId').val()
 
         //执行搜索重载
         table.reload('currentTableId', {
+          url:'/user?method=selectByNameAndId&userId='+userId+'&name='+name,
           page: {
             curr: 1//重新从第 1 页开始
           }
           , where: {
-            searchParams: result
+            name:name,
+            userId:userId
           }
-        }, 'data');
 
         return false;
       });
@@ -145,7 +144,7 @@
                     icon: 6,
                     time: 500
                   }, function () {//重新加载表格
-                    table.reload()
+                    location.reload()
                     var iframeIndex = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(iframeIndex);
                   });

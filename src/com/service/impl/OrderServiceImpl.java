@@ -20,7 +20,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> selectByUserName(String name) {
-        return orderDao.selectByUserName(name);
+    public List<Order> selectByUserName(String name,String page, String limit) {
+        return orderDao.selectByUserName(name,page,limit);
+    }
+
+    @Override
+    public void updateStatus(Integer orderId, String status) {
+        orderDao.updateStatus(orderId, status);
+    }
+    @Override
+    public List<Order> selectAllOrder(String page, String limit) {
+        return orderDao.selectAllOrder(page, limit);
+    }
+
+    @Override
+    public List<Order> selectTicketByName(String name, String page, String limit) {
+        return orderDao.selectTicketByName(name, page, limit);
     }
 }

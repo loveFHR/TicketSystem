@@ -69,6 +69,10 @@ public class UserController extends HttpServlet {
 
                 break;
             }
+            case "selectByNameAndId": {
+                String userId = req.getParameter("userId");
+                String name = req.getParameter("name");
+            }
         }
     }
 }

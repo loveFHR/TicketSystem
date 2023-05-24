@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>carousel模块快速使用</title>
+    <title>欢迎</title>
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
 </head>
 <body>

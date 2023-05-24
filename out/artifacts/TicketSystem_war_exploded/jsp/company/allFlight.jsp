@@ -27,25 +27,25 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">航班号</label>
+                            <label class="layui-form-label">始发地</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="flightID" name="flightID" autocomplete="off" class="layui-input">
+                                <input id="inputStartAdd" type="text" name="startAdd" autocomplete="off" class="layui-input" placeholder="请输入或选择始发地">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">始发地</label>
+                            <label class="layui-form-label">目的地</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="startAdd" name="startAdd" autocomplete="off" class="layui-input">
+                                <input id="inputTargetAdd" type="text" name="targetAdd" autocomplete="off" class="layui-input" placeholder="请输入目的地" >
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">日期</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="startDate" name="startDate" autocomplete="off" class="layui-input">
+                                <input type="date" id="inputStartDate" name="startDate"  placeholder="请选择日期" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            <button type="submit" class="layui-btn "  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
                     </div>
                 </form>
@@ -55,7 +55,6 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
 
@@ -98,32 +97,31 @@
                 {title: '操作', width: 120, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [5, 10, 15, 20, 25, 50, 100],//每页条数的选择项
-            limit: 5, //每页默认显示5条数据
+            limit: 10, //每页默认显示10条数据
             page: true,//开启分页
             skin: 'line' //用于设定表格风格,line （行边框风格）
         });
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            //var result = JSON.stringify(data.field);
-            var flightId =  $('#flightID').val()
-            var startAdd = $('#startAdd').val()
-            var startDate = $('#startDate').val()
-            console.log(flightId)
-            /*layer.alert(result, {
-                title: '最终的搜索信息'
-            });*/
+        /**
+         * 监听搜索事件
+         */
+        form.on('submit(data-search-btn)', function () {
+            var startAdd = $('#inputStartAdd').val()
+            var targetAdd = $('#inputTargetAdd').val()
+            var startDate = $('#inputStartDate').val()
             //执行搜索重载
-            table.reload('currentTableId', {
+            table.reload('currentTableId',{
+                url:'/flight?method=selectFlightByAddAndDate&startAdd='+startAdd+'&targetAdd='+targetAdd+'&startDate='+startDate,
                 page: {
                     curr: 1//重新从第 1 页开始
                 }
                 , where: {
-                    'flightId':flightId,
-                    'startAdd':startAdd,
-                    'startDate':startDate
+                    startAdd:startAdd,
+                    targetAdd:targetAdd,
+                    startDate:startDate
                 }
             });
+            return false
         });
 
         /**
@@ -143,44 +141,10 @@
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                /*
-                  1、提示内容，必须删除大于0条
-                  2、获取要删除记录的id信息
-                  3、提交删除功能 ajax
-                */
-                //获取选中的记录信息
-                var checkStatus = table.checkStatus('currentTableId')
-                var data = checkStatus.data;
-                if(data.length==0){//如果没有选中信息
-                    layer.msg("请选择要删除的记录信息");
-                }else{
-                    //获取记录信息的id集合,拼接的ids
-                    var ids= getCheckId(data);
-                    layer.confirm('确定是否删除', function (index) {
-                        //调用删除功能
-                        deleteFlightByIds(ids,index);
-                        layer.close(index);
-                    });
-                }
             }
         });
-
         /**
-         * 获取选中记录的id信息
-         */
-        function getCheckId(data){
-            var arr=[];
-            for(var i=0;i<data.length;i++){
-                arr.push(data[i].id);
-            }
-            //拼接id,变成一个字符串
-            console.log(arr.join(","))
-            return arr.join(",");
-        };
-
-        /**
-         * 通过ID的集合删除航班
+         * 通过ID删除航班
          * @param flightIds
          */
         function deleteFlightByIds(flightIds){
@@ -196,7 +160,7 @@
                             icon: 6,
                             time: 500
                         }, function () {//重新加载页面
-                            table.reload();
+                            table.reload('currentTableId');
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
                         });
@@ -206,12 +170,6 @@
                 }
             })
         }
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
-
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
             if (obj.event === 'edit') {
@@ -247,6 +205,5 @@
 
     });
 </script>
-
 </body>
 </html>

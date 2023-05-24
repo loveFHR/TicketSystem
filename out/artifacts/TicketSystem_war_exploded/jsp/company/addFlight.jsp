@@ -100,13 +100,15 @@
                 success:function (res){
                     if (res === "success") {
                         var index = layer.alert("添加成功", {
-                            title: '最终的提交信息'
+                            title: '信息'
                         }, function () {
                             // 关闭弹出层
                             layer.close(index);
-                            window.location.reload();
                             var iframeIndex = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(iframeIndex);
+                            setTimeout(()=>{
+                                location.reload();
+                            },1000);
                         });
                     } else {
                         layer.msg('添加失败，请检查航班信息是否正确', {icon:5, time:2000})
@@ -114,7 +116,6 @@
                 }
             })
         });
-
     });
 </script>
 </body>

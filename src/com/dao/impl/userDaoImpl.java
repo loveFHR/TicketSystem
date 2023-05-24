@@ -10,7 +10,7 @@ import java.util.List;
 
 public class userDaoImpl implements UserDao {
     /**
-     * 通过用户名和密码查询用户，并传入身份
+     * 通过用户名和密码查询用户(管理员)，并传入身份
      * 用于登录验证
      * @param name
      * @param password
@@ -40,7 +40,6 @@ public class userDaoImpl implements UserDao {
         }
         return false;
     }
-
     /**
      * 通过用户名查找用户
      * 用于注册时确保用户名唯一
@@ -97,7 +96,7 @@ public class userDaoImpl implements UserDao {
 
     /**
      * 查询所有用户
-     * @return
+     * @return 用户集合
      */
     @Override
     public List<User> selectAllUser(String page, String limit) {
@@ -182,6 +181,10 @@ public class userDaoImpl implements UserDao {
         }
     }
 
+    /**
+     * 管理员通过id删除用户
+     * @param userId
+     */
     @Override
     public void deleteUserById(Integer userId) {
         Connection conn = null;
@@ -199,6 +202,11 @@ public class userDaoImpl implements UserDao {
         }
     }
 
+    /**
+     * 通过ID查询用户
+     * @param userId
+     * @return
+     */
     @Override
     public User selectUserById(Integer userId) {
         Connection conn = null;
@@ -209,6 +217,35 @@ public class userDaoImpl implements UserDao {
             String sql = "SELECT * FROM `user` WHERE u_id = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1,userId);
+            rs = ps.executeQuery();
+            User user = new User();
+            if (rs.next()) {
+                user.setUserId(rs.getInt("u_id"));
+                user.setName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setGender(rs.getString("gender"));
+                user.setIdNumber(rs.getString("id_number"));
+            }
+            return user;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
+
+    @Override
+    public User selectByIdAndName(Integer userId, String name) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "SELECT * FROM `user` WHERE u_id = ? and username like ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,userId);
+            ps.setString(2,"%"+name+"%");
             rs = ps.executeQuery();
             User user = new User();
             if (rs.next()) {

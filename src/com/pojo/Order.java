@@ -5,16 +5,11 @@ public class Order {
     private String cabin;//舱位
     private String notes;//备注
     private String status;//状态
+    private String createTime;
+    private String updateTime;
     private User user;
     private Flight flight;
     public Order() {
-    }
-
-    public Order(Integer orderId, String cabin, User user, Flight flight) {
-        this.orderId = orderId;
-        this.cabin = cabin;
-        this.user = user;
-        this.flight = flight;
     }
 
     public Integer getOrderId() {
@@ -49,6 +44,22 @@ public class Order {
         this.status = status;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String crateTime) {
+        this.createTime = crateTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public User getUser() {
         return user;
     }
@@ -72,6 +83,8 @@ public class Order {
                 ", cabin='" + cabin + '\'' +
                 ", notes='" + notes + '\'' +
                 ", status='" + status + '\'' +
+                ", crateTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
                 ", user=" + user +
                 ", flight=" + flight +
                 '}';

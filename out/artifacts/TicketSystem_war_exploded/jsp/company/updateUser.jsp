@@ -46,7 +46,7 @@
   <div class="layui-form-item">
     <label class="layui-form-label required">性别</label>
     <div class="layui-input-inline">
-      <input type="text" lay-verify="required" name="gender" value="${user.gender}" class="layui-input">
+      <%--<input type="text" lay-verify="required" name="gender" value="${user.gender}" class="layui-input">--%>
         <input type="radio" id="male" name="gender" value="男" title="男">
         <input type="radio" id="female" name="gender" value="女" title="女">
     </div>
@@ -72,14 +72,14 @@
     var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-    $('#male').prop("checked",true)
-    if ('${user.gender}' === '男'){
-      console.log("。。。。。。。。。。。。。。。")
-      $('#male').prop("checked",true)
-      $('#male').attr("abc","123")
-    } else {
-      $('#female').prop("checked",true)
+
+    var gender = '${user.gender}';
+    if (gender === '男') {
+      $('input[name=gender][value=男]').prop('checked', true);
+    } else if (gender === '女') {
+      $('input[name=gender][value=女]').prop('checked', true);
     }
+    form.render();
     //监听提交
     form.on('submit(saveBtn)', function (data) {
       /* 18位身份证的正则表达式验证

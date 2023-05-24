@@ -142,7 +142,6 @@ public class FlightDaoImpl implements FlightDao {
         }
         return null;
     }
-
     /**
      * 修改航班
      * @param flightId
@@ -175,6 +174,10 @@ public class FlightDaoImpl implements FlightDao {
         }
     }
 
+    /**
+     * 通过ID删除航班
+     * @param flightId
+     */
     @Override
     public void deleteFlightById(Integer flightId) {
         Connection conn = null;
@@ -191,7 +194,6 @@ public class FlightDaoImpl implements FlightDao {
             JNDIUtils.close(conn,ps,null);
         }
     }
-
     /**
      * 查询始发地
      * @return
@@ -220,9 +222,8 @@ public class FlightDaoImpl implements FlightDao {
         }
         return null;
     }
-
     /**
-     * 查询始发地和目的地的数量
+     * 查询始发地不重复的数量
      * @param address
      * @return
      */
@@ -250,56 +251,26 @@ public class FlightDaoImpl implements FlightDao {
     }
 
     /**
-     * 通过始发地查目的地
+     * 用户通过始发地、目的地、日期查找航班
      * @param startAdd
+     * @param targetAdd
+     * @param date
      * @return
      */
     @Override
-    public List<Flight> selectTargetAdd(String startAdd) {
+    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date,String page,String limit) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
             conn = JNDIUtils.getConnection();
-            String sql = "select * from `flight` where start_add like ?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1,"%"+startAdd+"%");
-            rs = ps.executeQuery();
-
-            List<Flight> list = new ArrayList<>();
-            while (rs.next()) {
-                Flight flight = new Flight();
-                flight.setFlightNumber(rs.getString("f_number"));
-                flight.setStartDate(rs.getDate("start_date").toString());//把数据库Date类型转成字符串
-                flight.setStartTime(rs.getTime("start_time").toString());//把数据库Time类型转成字符串
-                flight.setStartAdd(rs.getString("start_add"));
-                flight.setTargetAdd(rs.getString("target_add"));
-                flight.setTotalSeats(rs.getInt("total_seats"));
-                flight.setAvailableSeats(rs.getInt("available_seats"));
-                flight.setPrice(rs.getDouble("price"));
-                list.add(flight);
-            }
-            return list;
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            JNDIUtils.close(conn,ps,rs);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try{
-            conn = JNDIUtils.getConnection();
-            String sql = "select * from `flight` where start_add like ? and target_add like ? and start_date like ?";
+            String sql = "select * from `flight` where start_add like ? and target_add like ? and start_date like ? limit ?,?";
             ps = conn.prepareStatement(sql);
             ps.setString(1,"%"+startAdd+"%");
             ps.setString(2, "%"+targetAdd+"%");
             ps.setString(3, "%"+date+"%");
+            ps.setInt(4,(Integer.parseInt(page)-1)*Integer.parseInt(limit));//（页数-1）* 每页数量
+            ps.setInt(5,Integer.parseInt(limit)); //每页的数量
             rs = ps.executeQuery();
 
             List<Flight> list = new ArrayList<>();
@@ -336,7 +307,7 @@ public class FlightDaoImpl implements FlightDao {
         PreparedStatement ps = null;
         try{
             conn = JNDIUtils.getConnection();
-            String sql = "update flight set available_seats=available_seats"+option+"1 where f_id = ?";
+            String sql = "update flight set available_seats =available_seats"+option+"1 where f_id = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1,flightId);
             ps.executeUpdate();

@@ -50,13 +50,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> selectTargetAdd(String startAdd) {
-        return flightDao.selectTargetAdd(startAdd);
-    }
-
-    @Override
-    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date) {
-        return flightDao.selectFlightByAddAndDate(startAdd,targetAdd,date);
+    public List<Flight> selectFlightByAddAndDate(String startAdd, String targetAdd, String date,String page, String limit) {
+        return flightDao.selectFlightByAddAndDate(startAdd,targetAdd,date,page,limit);
     }
 
     @Override

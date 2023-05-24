@@ -48,7 +48,7 @@
                     <dl class="layui-nav-child" >
                         <dd class="left"><a href="javascript:;" lay-href="./allUser.jsp">查询所有旅客</a></dd>
                         <dd class="left"><a href="javascript:;" lay-href="./allFlight.jsp">查询所有航班</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="">查询所有订单</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="./allOrder.jsp">查询所有订单</a></dd>
                     </dl>
                 </li>
             </ul>

@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button class="layui-btn" lay-submit lay-filter="formStep" >
+                                            <button class="layui-btn layui-btn-radius" lay-submit lay-filter="formStep" >
                                                 &emsp;下一步&emsp;
                                             </button>
                                         </div>
@@ -123,9 +123,9 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
-                                            <button class="layui-btn" lay-submit lay-filter="formStep3">暂时预定</button>
-                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                            <button type="button" class="layui-btn layui-btn-primary pre layui-btn-radius">上一步</button>
+                                            <button class="layui-btn layui-btn-radius" lay-submit lay-filter="formStep3">暂时预定</button>
+                                            <button class="layui-btn layui-btn-radius" lay-submit lay-filter="formStep2">
                                                 确认支付${order.flight.price}元
                                             </button>
                                         </div>
@@ -141,7 +141,7 @@
                                     <div id="complete2" style="font-size: 14px;color: #666;margin-top: 20px;"></div>
                                 </div>
                                 <div style="text-align: center;margin-top: 50px;">
-                                    <button class="layui-btn" id="determine">确定</button>
+                                    <button class="layui-btn layui-btn-radius" id="determine">确定</button>
                                 </div>
                             </div>
                         </div>
@@ -182,33 +182,39 @@
         });
 
         form.on('submit(formStep2)', function (data) {
-            $('#complete').text("支付成功")
-            $('#complete2').text("已为您生成订单，请及时取票")
-            $.ajax({
-                type:"POST",
-                url:"/order?method=insert",
-                data:{
-                    'cabin':$('#cabin1').val(),
-                    'notes':$('#notes1').val(),
-                    'status':'已支付'
-                }
-            })
-            step.next('#stepForm');
+            layer.confirm('确认支付吗', function (index) {
+                $('#complete').text("支付成功")
+                $('#complete2').text("已为您生成订单，请及时取票")
+                $.ajax({
+                    type:"POST",
+                    url:"/order?method=insert",
+                    data:{
+                        'cabin':$('#cabin1').val(),
+                        'notes':$('#notes1').val(),
+                        'status':'已支付'
+                    }
+                })
+                step.next('#stepForm');
+                layer.close(index);
+            });
             return false;  // 阻止默认 form 跳转
         });
         form.on('submit(formStep3)', function (data){
-            $('#complete').text("预定成功")
-            $('#complete2').text("已为您生成订单，请尽快完成支付")
-            $.ajax({
-                type:"POST",
-                url:"/order?method=insert",
-                data:{
-                    'cabin':$('#cabin1').val(),
-                    'notes':$('#notes1').val(),
-                    'status':'未支付'
-                }
-            })
-            step.next('#stepForm');
+            layer.confirm('确认预定吗', function (index) {
+                $('#complete').text("预定成功")
+                $('#complete2').text("已为您生成订单，请尽快完成支付")
+                $.ajax({
+                    type:"POST",
+                    url:"/order?method=insert",
+                    data:{
+                        'cabin':$('#cabin1').val(),
+                        'notes':$('#notes1').val(),
+                        'status':'未支付'
+                    }
+                })
+                step.next('#stepForm');
+                layer.close(index);
+            });
             return false;  // 阻止默认 form 跳转
         });
         $('.pre').click(function () {
