@@ -108,7 +108,7 @@ public class FlightController extends HttpServlet {
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");
-                map.put("count", list.size());
+                map.put("count", flightService.selectFlightByAddAndDateCount(startAdd, targetAdd, startDate));
                 map.put("data", list);
                 resp.getWriter().write(JSONObject.toJSON(map).toString());
                 break;

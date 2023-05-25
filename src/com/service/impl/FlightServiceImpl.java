@@ -55,6 +55,11 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
+    public int selectFlightByAddAndDateCount(String startAdd, String targetAdd, String date) {
+        return flightDao.selectFlightByAddAndDateCount(startAdd, targetAdd, date);
+    }
+
+    @Override
     public void updateSeats(Integer flightId, String option) {
         flightDao.updateSeats(flightId, option);
     }

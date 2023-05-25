@@ -38,7 +38,9 @@ public class OrderController extends HttpServlet {
                 String flightId = req.getParameter("flightId");
                 Order order = orderService.selectUserAndFlightById(userName, Integer.parseInt(flightId));
                 if(order.getFlight().getAvailableSeats() <= 0 ) {
-                    resp.getWriter().write("fail");
+                    resp.getWriter().write("ticket_error");
+                } else if (order.getUser().getIdNumber() == null || order.getUser().getGender() == null) {
+                    resp.getWriter().write("info_error");
                 } else {
                     session.setAttribute("order", order);
                     resp.getWriter().write("success");
@@ -67,7 +69,7 @@ public class OrderController extends HttpServlet {
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");
-                map.put("count", list.size());
+                map.put("count", orderService.selectByUserNameCount(name));
                 map.put("data", list);
                 resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
                 break;
@@ -95,7 +97,7 @@ public class OrderController extends HttpServlet {
                 Map<String,Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");
-                map.put("count", list.size());
+                map.put("count", orderService.selectAllOrderCount());
                 map.put("data", list);
                 resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
                 break;
@@ -122,6 +124,7 @@ public class OrderController extends HttpServlet {
             case "delete": {
                 String orderId = req.getParameter("orderId");
                 orderService.updateStatus(Integer.parseInt(orderId),"已退票");
+                flightService.updateSeats(Integer.parseInt(orderId),"+");
                 resp.getWriter().write("success");
                 break;
             }

@@ -13,5 +13,6 @@ public interface UserDao {
      void updateUserById(Integer userId, User user);
      void deleteUserById(Integer userId);
      User selectUserById(Integer userId);
-     User selectByIdAndName(Integer userId,String name);
+     List<User> selectByIdAndName(Integer userId,String name);
+     User selectByName (String name);
 }

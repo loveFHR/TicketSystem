@@ -296,6 +296,31 @@ public class FlightDaoImpl implements FlightDao {
         return null;
     }
 
+    @Override
+    public int selectFlightByAddAndDateCount(String startAdd, String targetAdd, String date) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "select count(*) from `flight` where start_add like ? and target_add like ? and start_date like ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+startAdd+"%");
+            ps.setString(2, "%"+targetAdd+"%");
+            ps.setString(3, "%"+date+"%");
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return 0;
+    }
+
     /**
      * 修改可用座位数
      * @param flightId

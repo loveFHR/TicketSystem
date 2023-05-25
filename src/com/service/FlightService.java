@@ -16,5 +16,6 @@ public interface FlightService {
     List<String> selectstartAdd();
     int countAdd(String address);
     List<Flight> selectFlightByAddAndDate(String startAdd,String targetAdd, String date,String page, String limit);
+    int selectFlightByAddAndDateCount(String startAdd,String targetAdd, String date);
     void updateSeats(Integer flightId, String option);
 }

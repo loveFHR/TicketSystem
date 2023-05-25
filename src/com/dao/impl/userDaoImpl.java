@@ -235,8 +235,14 @@ public class userDaoImpl implements UserDao {
         return null;
     }
 
+    /**
+     * 通过ID和name模糊搜索
+     * @param userId
+     * @param name
+     * @return
+     */
     @Override
-    public User selectByIdAndName(Integer userId, String name) {
+    public List<User> selectByIdAndName(Integer userId, String name) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -246,6 +252,41 @@ public class userDaoImpl implements UserDao {
             ps = conn.prepareStatement(sql);
             ps.setInt(1,userId);
             ps.setString(2,"%"+name+"%");
+            rs = ps.executeQuery();
+            List<User> list = new ArrayList<>();
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("u_id"));
+                user.setName(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setGender(rs.getString("gender"));
+                user.setIdNumber(rs.getString("id_number"));
+                list.add(user);
+            }
+            return list;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
+
+    /**
+     * 通过姓名查找用户
+     * @param name
+     * @return
+     */
+    @Override
+    public User selectByName(String name) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            conn = JNDIUtils.getConnection();
+            String sql = "SELECT * FROM `user` WHERE username = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,name);
             rs = ps.executeQuery();
             User user = new User();
             if (rs.next()) {

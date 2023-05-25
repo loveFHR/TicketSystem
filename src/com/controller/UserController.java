@@ -33,7 +33,7 @@ public class UserController extends HttpServlet {
         String method = req.getParameter("method");
 
         switch (method) {
-            case "select": //查询所有用户
+            case "select": {//查询所有用户
                 String page = req.getParameter("page");
                 String limit = req.getParameter("limit");
                 List<User> list = userService.selectAllUser(page, limit);
@@ -44,6 +44,7 @@ public class UserController extends HttpServlet {
                 map.put("data", list);
                 resp.getWriter().write(JSONObject.toJSON(map).toString());
                 break;
+            }
             case "updForm": { //通过id查找用户
                 String userId = req.getParameter("userId");
                 User user = userService.selectUserById(Integer.parseInt(userId));//查询出选中要修改用户的信息
@@ -72,6 +73,21 @@ public class UserController extends HttpServlet {
             case "selectByNameAndId": {
                 String userId = req.getParameter("userId");
                 String name = req.getParameter("name");
+                List<User> list = userService.selectByIdAndName(Integer.parseInt(userId), name);
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", 0);
+                map.put("msg", "");
+                map.put("count", userService.userCount());
+                map.put("data", list);
+                resp.getWriter().write(JSONObject.toJSON(map).toString());
+                break;
+            }
+            case "userUpdForm": {
+                String name = req.getParameter("name");
+                User user = userService.selectByName(name);
+                session.setAttribute("user", user);
+                resp.getWriter().write("success");
+                break;
             }
         }
     }

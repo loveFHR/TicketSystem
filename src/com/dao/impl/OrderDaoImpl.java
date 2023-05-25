@@ -135,6 +135,27 @@ public class OrderDaoImpl implements OrderDao {
         return null;
     }
 
+    @Override
+    public int selectByUserNameCount(String name) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JNDIUtils.getConnection();
+            String sql = "select count(*) from `order`,flight,`user` where flight_id = f_id and user_id = u_id and username = ? order by `create_time` desc";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,name);
+            ps.executeQuery();
+            if (rs.next())
+                return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return 0;
+    }
+
     /**
      * 当用户重新支付、取消订单时修改订单状态
      * @param orderId
@@ -208,6 +229,26 @@ public class OrderDaoImpl implements OrderDao {
         }
         return null;
     }
+
+    @Override
+    public int selectAllOrderCount() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JNDIUtils.getConnection();
+            String sql = "select count(*) from `order`,flight,`user` where flight_id = f_id and user_id = u_id order by `create_time` desc";
+            ps = conn.prepareStatement(sql);
+            ps.executeQuery();
+            if (rs.next())
+                return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return 0;
+    }
+
     @Override
     public List<Order> selectTicketByName(String name,String page, String limit) {
         Connection conn = null;

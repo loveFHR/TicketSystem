@@ -25,12 +25,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int selectByUserNameCount(String name) {
+        return orderDao.selectByUserNameCount(name);
+    }
+
+    @Override
     public void updateStatus(Integer orderId, String status) {
         orderDao.updateStatus(orderId, status);
     }
     @Override
     public List<Order> selectAllOrder(String page, String limit) {
         return orderDao.selectAllOrder(page, limit);
+    }
+
+    @Override
+    public int selectAllOrderCount() {
+        return orderDao.selectAllOrderCount();
     }
 
     @Override

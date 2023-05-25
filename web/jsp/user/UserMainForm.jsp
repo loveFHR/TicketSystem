@@ -29,7 +29,7 @@
                     ${name}(旅客)
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="" class="btn2">修改资料</a></dd>
+                    <dd><a href="javaScript:;" id="btn2">修改资料</a></dd>
                     <hr/>
                     <dd><a href="/CheckLogin?method=2">退出</a></dd>
                 </dl>
@@ -69,6 +69,29 @@
                 $('#main').attr("src",$(this).attr("lay-href"));//将iframe的src值改为被点击的超链接的lay-href的值
             });
         });
+        $("#btn2").click(function (){
+            $.ajax({
+                type:"POST",
+                url:"/user?method=userUpdForm",
+                data:{
+                    name:'${name}'
+                },
+                success:function (){
+                    var index = layer.open({
+                        title: '修改资料',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin:true,
+                        shadeClose: true,
+                        area: ['70%', '70%'],
+                        content: '/jsp/user/userUpdateInfo.jsp',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }
+            })
+        })
     });
 </script>
 </body>

@@ -89,15 +89,15 @@
 
         //执行搜索重载
         table.reload('currentTableId', {
-          url:'/user?method=selectByNameAndId&userId='+userId+'&name='+name,
+          url: '/user?method=selectByNameAndId&userId=' + userId + '&name=' + name,
           page: {
             curr: 1//重新从第 1 页开始
           }
           , where: {
-            name:name,
-            userId:userId
+            name: name,
+            userId: userId
           }
-
+        })
         return false;
       });
       //监听表格复选框选择
