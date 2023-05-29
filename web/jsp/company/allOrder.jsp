@@ -47,7 +47,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">创建日期</label>
                             <div class="layui-input-inline">
-                                <input type="datetime-local" id="createTime" name="createTime"  placeholder="请选择日期" class="layui-input">
+                                <input type="date" id="createTime" name="createTime"  placeholder="请选择日期" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -91,6 +91,28 @@
                 {field: 'updateTime',  title: '修改时间'},
                 {field: 'status',  title: '状态'}
             ]]
+        });
+
+        /**
+         * 监听搜索事件
+         */
+        form.on('submit(data-search-btn)', function () {
+            var username = $('#username').val()
+            var startAdd = $('#startAdd').val()
+            var createTime = $('#createTime').val()
+            //执行搜索重载
+            table.reload('currentTableId',{
+                url:'/order?method=companySelectOrder&startAdd='+startAdd+'&username='+username+'&createTime='+createTime,
+                page: {
+                    curr: 1//重新从第 1 页开始
+                }
+                , where: {
+                    startAdd:startAdd,
+                    username:username,
+                    createTime:createTime
+                }
+            });
+            return false
         });
     });
 </script>

@@ -47,4 +47,14 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> selectTicketByName(String name, String page, String limit) {
         return orderDao.selectTicketByName(name, page, limit);
     }
+
+    @Override
+    public List<Order> companySelectOrder(String name, String startAdd, String createTime, String page, String limit) {
+        return orderDao.companySelectOrder(name, startAdd, createTime, page, limit);
+    }
+
+    @Override
+    public int companySelectOrderCount(String name, String startAdd, String createTime) {
+        return orderDao.companySelectOrderCount(name, startAdd, createTime);
+    }
 }

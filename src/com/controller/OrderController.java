@@ -128,6 +128,20 @@ public class OrderController extends HttpServlet {
                 resp.getWriter().write("success");
                 break;
             }
+            case "companySelectOrder": {
+                String startAdd = req.getParameter("startAdd");
+                String username = req.getParameter("username");
+                String createTime = req.getParameter("createTime");
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
+                List<Order> list = orderService.companySelectOrder(username, startAdd, createTime, page, limit);
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", 0);
+                map.put("msg", "");
+                map.put("count", orderService.companySelectOrderCount(username,startAdd,createTime));
+                map.put("data", list);
+                resp.getWriter().write(JSONObject.toJSON(map).toString());//向前端发送数据
+            }
         }
     }
 }

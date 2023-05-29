@@ -29,7 +29,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">始发地</label>
                             <div class="layui-input-inline">
-                                <input id="inputStartAdd" type="text" name="startAdd" autocomplete="off" class="layui-input" placeholder="请输入或选择始发地">
+                                <input id="inputStartAdd" type="text" name="startAdd" autocomplete="off" class="layui-input" placeholder="请输入始发地">
                             </div>
                         </div>
                         <div class="layui-inline">

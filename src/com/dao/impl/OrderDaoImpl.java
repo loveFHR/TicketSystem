@@ -295,4 +295,77 @@ public class OrderDaoImpl implements OrderDao {
         }
         return null;
     }
+
+    @Override
+    public List<Order> companySelectOrder(String name, String startAdd, String createTime, String page, String limit) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JNDIUtils.getConnection();
+            String sql = "select * from `order`,`flight`,`user` where flight_id = f_id and user_id = u_id and " +
+                    "username like ? and `start_add` like ? and create_time like ? order by `create_time` desc limit ?,?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+name+"%");
+            ps.setString(2,"%"+startAdd+"%");
+            ps.setString(3,"%"+createTime+"%");
+            ps.setInt(4,(Integer.parseInt(page)-1)*Integer.parseInt(limit));//（页数-1）* 每页数量
+            ps.setInt(5,Integer.parseInt(limit)); //每页的数量
+            rs = ps.executeQuery();
+            List list = new ArrayList();
+            while (rs.next()) {
+                Order order = new Order();
+                User user = new User();
+                Flight flight = new Flight();
+                user.setName(rs.getString("username"));
+                user.setIdNumber(rs.getString("id_number"));
+                flight.setFlightId(rs.getInt("flight_id"));
+                flight.setFlightNumber(rs.getString("f_number"));
+                flight.setStartDate(rs.getDate("start_date").toString());
+                flight.setStartTime(rs.getTime("start_time").toString());
+                flight.setStartAdd(rs.getString("start_add"));
+                flight.setTargetAdd(rs.getString("target_add"));
+                flight.setPrice(rs.getDouble("price"));
+                order.setOrderId(rs.getInt("order_id"));
+                order.setStatus(rs.getString("status"));
+                order.setCabin(rs.getString("cabin"));
+                order.setNotes(rs.getString("notes"));
+                order.setCreateTime(rs.getTimestamp("create_time").toString());
+                order.setUpdateTime(rs.getTimestamp("update_time").toString());
+                order.setUser(user);
+                order.setFlight(flight);
+                list.add(order);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return null;
+    }
+
+    @Override
+    public int companySelectOrderCount(String name, String startAdd, String createTime) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JNDIUtils.getConnection();
+            String sql = "select * from `order`,`flight`,`user` where flight_id = f_id and user_id = u_id and " +
+                    "username like ? and `start_add` like ? and create_time like ? order by `create_time` desc";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+name+"%");
+            ps.setString(2,"%"+startAdd+"%");
+            ps.setString(3,"%"+createTime+"%");
+            rs = ps.executeQuery();
+            if (rs.next())
+                return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JNDIUtils.close(conn,ps,rs);
+        }
+        return 0;
+    }
 }

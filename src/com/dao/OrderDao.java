@@ -13,4 +13,6 @@ public interface OrderDao {
     int selectAllOrderCount();
     List<Order> selectTicketByName(String name,String page, String limit);
     void updateStatus(Integer orderId,String status);
+    List<Order> companySelectOrder(String name,String startAdd,String createTime, String page, String limit);
+    int companySelectOrderCount(String name,String startAdd,String createTime);
 }
