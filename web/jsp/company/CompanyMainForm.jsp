@@ -26,9 +26,7 @@
                     ${name}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">Your Profile</a></dd>
-                    <dd><a href="">Settings</a></dd>
-                    <dd><a href="/CheckLogin?method=2" id="sign out" target="_self">Sign out</a></dd>
+                    <dd><a href="/CheckLogin?method=2" id="sign out" target="_self">退出</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
@@ -46,9 +44,9 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">主要功能</a>
                     <dl class="layui-nav-child" >
-                        <dd class="left"><a href="javascript:;" lay-href="./allUser.jsp">查询所有旅客</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="./allFlight.jsp">查询所有航班</a></dd>
-                        <dd class="left"><a href="javascript:;" lay-href="./allOrder.jsp">查询所有订单</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="./allUser.jsp">旅客管理</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="./allFlight.jsp">航班管理</a></dd>
+                        <dd class="left"><a href="javascript:;" lay-href="./allOrder.jsp">订单管理</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -62,7 +60,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        @冯华荣真帅,杨飞扬也帅
+        @机票预定系统:公司管理页面
     </div>
 </div>
 <script src="/layui/layui.js"></script>

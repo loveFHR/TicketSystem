@@ -78,7 +78,7 @@
               window.location.href = "/jsp/login.jsp"
             })
           }else {
-            layer.msg('注册失败',{icon:5})
+            layer.msg('注册失败,该用户名已存在',{icon:5})
           }
         }
       })

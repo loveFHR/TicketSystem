@@ -27,6 +27,36 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input id="username" type="text" name="username" autocomplete="off" class="layui-input" placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">始发地</label>
+                            <div class="layui-input-inline">
+                                <input id="startAdd" type="text" name="startAdd" autocomplete="off" class="layui-input" placeholder="请输入始发地" >
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">创建日期</label>
+                            <div class="layui-input-inline">
+                                <input type="datetime-local" id="createTime" name="createTime"  placeholder="请选择日期" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn "  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
     </div>
 </div>

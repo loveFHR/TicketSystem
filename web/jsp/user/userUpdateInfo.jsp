@@ -24,10 +24,10 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <div class="layui-form-item">
+    <div style="display: none" class="layui-form-item">
         <label class="layui-form-label required">ID</label>
         <div class="layui-input-block">
-            <input type="text" name="userId" lay-verify="required" class="layui-input" value="${user.userId}" readonly>
+            <input type="hidden" name="userId" lay-verify="required" class="layui-input" value="${user.userId}" readonly>
             <tip>ID不可修改</tip>
         </div>
     </div>
