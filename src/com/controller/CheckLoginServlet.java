@@ -38,9 +38,11 @@ public class CheckLoginServlet extends HttpServlet {
 
             if (result && identity.equals("company")) {
                 session.setAttribute("name",name);
+                session.setAttribute("isCompany",true);
                 response.getWriter().write("company");
             } else if (result && identity.equals("user")) {
                 session.setAttribute("name",name);
+                session.setAttribute("isUser",true);
                 response.getWriter().write("traveller");
             } else {
                 response.getWriter().write("fail");

@@ -23,9 +23,9 @@
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 
   <div class="layadmin-user-login-main">
-
+    <span>${msg}</span>
     <div class="layadmin-user-login-box layadmin-user-login-header">
-      <h2>请先登录</h2>
+      <h2>登录机票预定系统</h2>
       <p> </p>
     </div>
 
@@ -58,8 +58,8 @@
   </div>
 </div>
 
-<script src="/layui/layui.js"  ></script>
-<script src="/jquery-3.6.3/jquery-3.6.3.js"></script>
+<script type="text/javascript" src="/layui/layui.js"  ></script>
+<script type="text/javascript" src="/jquery-3.6.3/jquery-3.6.3.js"></script>
 <script type="text/javascript">
   function login(){
     var name = $('#LAY-user-login-username').val();
@@ -77,6 +77,9 @@
             ,time: 1000
           }, function(){
             location.href = '/jsp/company/CompanyMainForm.jsp';
+            <%
+              session.removeAttribute("msg");
+            %>
           });
         } else if (res === "traveller") {
           layer.msg('登录成功', {
@@ -85,6 +88,9 @@
             ,time: 1000
           }, function(){
             location.href = '/jsp/user/UserMainForm.jsp';
+            <%
+              session.removeAttribute("msg");
+            %>
           });
         } else {
           layer.msg('登录失败,请检查用户名或密码');

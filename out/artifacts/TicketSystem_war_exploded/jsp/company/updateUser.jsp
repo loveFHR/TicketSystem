@@ -46,7 +46,6 @@
   <div class="layui-form-item">
     <label class="layui-form-label required">性别</label>
     <div class="layui-input-inline">
-      <%--<input type="text" lay-verify="required" name="gender" value="${user.gender}" class="layui-input">--%>
         <input type="radio" id="male" name="gender" value="男" title="男">
         <input type="radio" id="female" name="gender" value="女" title="女">
     </div>
@@ -101,6 +100,9 @@
         },
         success:function (res){
           if (res === "success"){
+            <%
+              session.removeAttribute("user");
+            %>
             var index = layer.alert("修改成功", {
               title: '最终的提交信息'
             }, function () {

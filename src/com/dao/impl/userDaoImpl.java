@@ -237,24 +237,24 @@ public class userDaoImpl implements UserDao {
 
     /**
      * 通过ID和name模糊搜索
-     * @param userId
+     * @param idNumber
      * @param name
      * @return
      */
     @Override
-    public List<User> selectByIdAndName(Integer userId, String name) {
+    public List<User> selectByIdNumberAndName(String idNumber, String name) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try{
             conn = JNDIUtils.getConnection();
-            String sql = "SELECT * FROM `user` WHERE u_id = ? and username like ?";
+            String sql = "SELECT * FROM `user` WHERE id_number like ? and username like ?";
             ps = conn.prepareStatement(sql);
-            ps.setInt(1,userId);
+            ps.setString(1,"%"+idNumber+"%");
             ps.setString(2,"%"+name+"%");
             rs = ps.executeQuery();
             List<User> list = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 User user = new User();
                 user.setUserId(rs.getInt("u_id"));
                 user.setName(rs.getString("username"));

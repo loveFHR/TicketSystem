@@ -57,6 +57,8 @@
                 {field: 'flight.targetAdd',  title: '目的地',templet:function (res){return res.flight.targetAdd},style: 'font-weight:bold;font-size:25px'},
                 {field: 'cabin',  title: '舱位'},
                 {field: 'notes',  title: '备注'},
+                {field: 'createTime',  title: '创建时间'},
+                {field: 'updateTime',  title: '修改时间'},
                 {field: 'status',  title: '状态'}
             ]]
         });

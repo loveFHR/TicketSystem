@@ -145,7 +145,7 @@ public class OrderDaoImpl implements OrderDao {
             String sql = "select count(*) from `order`,flight,`user` where flight_id = f_id and user_id = u_id and username = ? order by `create_time` desc";
             ps = conn.prepareStatement(sql);
             ps.setString(1,name);
-            ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next())
                 return rs.getInt(1);
         } catch (Exception e) {
@@ -239,12 +239,13 @@ public class OrderDaoImpl implements OrderDao {
             conn = JNDIUtils.getConnection();
             String sql = "select count(*) from `order`,flight,`user` where flight_id = f_id and user_id = u_id order by `create_time` desc";
             ps = conn.prepareStatement(sql);
-            ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next())
                 return rs.getInt(1);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            JNDIUtils.close(conn,ps,rs);
         }
         return 0;
     }

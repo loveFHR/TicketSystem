@@ -16,6 +16,6 @@ public interface UserService {
     void updateUserById(Integer userId, User user);
     void deleteUserById(Integer userId);
     User selectUserById(Integer userId);
-    List<User> selectByIdAndName(Integer userId,String name);
+    List<User> selectByIdNumberAndName(String idNumber,String name);
     User selectByName (String name);
 }

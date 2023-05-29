@@ -33,9 +33,9 @@
                 </div>
               </div>
               <div class="layui-inline">
-                <label class="layui-form-label">ID</label>
+                <label class="layui-form-label">身份证</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="userId" id="userId" autocomplete="off" class="layui-input">
+                  <input type="text" name="idNumber" id="idNumber" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
@@ -85,17 +85,17 @@
       // 监听搜索操作
       form.on('submit(data-search-btn)', function (data) {
         var name = $('#username').val()
-        var userId = $('#userId').val()
+        var idNumber = $('#idNumber').val()
 
         //执行搜索重载
         table.reload('currentTableId', {
-          url: '/user?method=selectByNameAndId&userId=' + userId + '&name=' + name,
+          url: '/user?method=selectByNameAndIdNumber&idNumber=' + idNumber + '&name=' + name,
           page: {
             curr: 1//重新从第 1 页开始
           }
           , where: {
             name: name,
-            userId: userId
+            idNumber:idNumber
           }
         })
         return false;

@@ -50,12 +50,14 @@
             elem: '#ID-table-demo-css'
             ,url:'/order?method=selectByUserName&name=${name}'
             ,page: true
+            ,limits: [5, 10, 15, 20, 25, 50, 100]//每页条数的选择项
+            ,limit: 5 //每页默认显示5条数据
             ,lineStyle: 'height: 180px;' // 定义表格的多行样式
             ,css: [
                 '.layui-table-page{text-align: center;}' // 让分页栏居中
             ].join('')
             ,cols: [[
-                {minWidth:600, templet: '#ID-table-demo-css-1'},
+                {templet: '#ID-table-demo-css-1'},
                 {templet: '#ID-table-demo-css-3'},
                 {templet: '#ID-table-demo-css-2'},
                 {templet: function(res) {

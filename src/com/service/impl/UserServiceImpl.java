@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectByIdAndName(Integer userId, String name) {
-        return userDao.selectByIdAndName(userId, name);
+    public List<User> selectByIdNumberAndName(String idNumber, String name) {
+        return userDao.selectByIdNumberAndName(idNumber, name);
     }
 
     @Override

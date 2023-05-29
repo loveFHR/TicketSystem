@@ -135,7 +135,7 @@
                         success:function (res) {
                             if (res === 'success') {
                                 var index = layer.open({
-                                    title: '订购航班',
+                                    title: '预定机票',
                                     type: 2,
                                     shade: 0.2,
                                     maxmin:true,
@@ -146,8 +146,38 @@
                                 $(window).on("resize", function () {
                                     layer.full(index);
                                 });
-                            }else {
+                            }else if (res === 'ticket_error') {
                                 layer.alert("该航班暂无票，请等待他人取消订单或退票",3000)
+                            }else if (res === 'info_error') {
+                                layer.msg("请先填写身份信息",{
+                                    offset: '15px'
+                                    ,icon: 1
+                                    ,time: 2500
+                                })
+                                var timeoutId =  setTimeout(function (){
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"/user?method=userUpdForm",
+                                        data:{
+                                            name:'${name}'
+                                        },
+                                        success:function (){
+                                            var index = layer.open({
+                                                title: '修改资料',
+                                                type: 2,
+                                                shade: 0.2,
+                                                maxmin:true,
+                                                shadeClose: true,
+                                                area: ['100%', '100%'],
+                                                content: '/jsp/user/userUpdateInfo.jsp',
+                                            });
+                                            $(window).on("resize", function () {
+                                                layer.full(index);
+                                            });
+                                        }
+                                    })
+                                },2500)
+
                             }
                             return false;// 阻止默认 table 跳转
                         }

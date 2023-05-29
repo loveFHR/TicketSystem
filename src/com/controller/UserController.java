@@ -70,10 +70,11 @@ public class UserController extends HttpServlet {
 
                 break;
             }
-            case "selectByNameAndId": {
-                String userId = req.getParameter("userId");
+            case "selectByNameAndIdNumber": {
+                String idNumber = req.getParameter("idNumber");
                 String name = req.getParameter("name");
-                List<User> list = userService.selectByIdAndName(Integer.parseInt(userId), name);
+                System.out.println("@@:"+idNumber+"@@:"+name);
+                List<User> list = userService.selectByIdNumberAndName(idNumber, name);
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", 0);
                 map.put("msg", "");
