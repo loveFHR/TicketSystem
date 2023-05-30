@@ -55,7 +55,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        @冯华荣真帅,杨飞扬也帅，乔一鸣也不赖
+        @机票预定系统:用户预定
     </div>
 </div>
 <script src="/layui/layui.js"></script>

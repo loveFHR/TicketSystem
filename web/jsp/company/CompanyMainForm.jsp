@@ -60,7 +60,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        @机票预定系统:公司管理页面
+        @机票预定系统:公司管理
     </div>
 </div>
 <script src="/layui/layui.js"></script>

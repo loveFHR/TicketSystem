@@ -53,7 +53,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">身份证</label>
         <div class="layui-input-block">
-            <input type="text" name="idNumber" lay-verify="required" lay-reqtext="身份证不能为空" placeholder="请输入身份证" class="layui-input" value="${user.idNumber}">
+            <input type="text" id="idNumber" name="idNumber" lay-verify="required" lay-reqtext="身份证不能为空" placeholder="请输入身份证" class="layui-input" value="${user.idNumber}">
             <tip>请再次确认身份证是否填写正确哦！！</tip>
         </div>
     </div>
@@ -81,38 +81,36 @@
         form.render();
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            /* 18位身份证的正则表达式验证
-            var idNumber = data.data.idNumber
-            var regExp = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-                  --->   /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-                         /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-
+             //18位身份证的正则表达式验证
+            var idNumber = $('#idNumber').val()
+            var regExp = /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])\d{3}([0-9]|X)$/
             var ok = regExp.test(idNumber)
             if(!ok){
               layer.alert("身份证不合法")
-            } else{}
-            */
-            $.ajax({
-                type:"POST",
-                url:"/user?method=update",
-                data:{
-                    updateData:JSON.stringify(data.field)
-                },
-                success:function (res){
-                    if (res === "success"){
-                        var index = layer.alert("修改成功", {
-                            title: '最终的提交信息'
-                        }, function () {
-                            // 关闭弹出层
-                            layer.close(index);
-                            var iframeIndex = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(iframeIndex);
-                        });
-                    }else {
-                        layer.msg('修改失败',{icon:5})
+            } else{
+                $.ajax({
+                    type:"POST",
+                    url:"/user?method=update",
+                    data:{
+                        updateData:JSON.stringify(data.field)
+                    },
+                    success:function (res){
+                        if (res === "success"){
+                            var index = layer.alert("修改成功", {
+                                title: '最终的提交信息'
+                            }, function () {
+                                // 关闭弹出层
+                                layer.close(index);
+                                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(iframeIndex);
+                            });
+                        }else {
+                            layer.msg('修改失败',{icon:5})
+                        }
                     }
-                }
-            })
+                })
+            }
+
         });
     });
 </script>
